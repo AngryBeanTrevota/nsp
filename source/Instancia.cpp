@@ -389,10 +389,12 @@ void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<En
     }
 }
 
-unique_ptr<Solucao> Instancia::buscaLocal(unique_ptr<Solucao> &sol)
+void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
 {
+    const auto &totalAlocacoes = sol->getTotalAlocacoes();
+
     // percorrer todos os candidatos
-    for (const auto &enfermeiro : sol->getTotalAlocacoes())
+    for (const auto &enfermeiro : totalAlocacoes)
     {
         const string &nomeEnfermeiro = enfermeiro.first->getCodigo();
         for (const auto &dia : enfermeiro.second)
@@ -414,7 +416,7 @@ unique_ptr<Solucao> Instancia::buscaLocal(unique_ptr<Solucao> &sol)
                             semanas[semanaAtual].getDemandaOtima(nomeDia, nomeTurno, habilidade), 0);
                         // salvar o turno dele
 
-                        // desalocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
+                        //
                         // sol->setNota(avaliaNota(*sol, semanaAtual));
                         // sol->exibirAlocacoes();
 
@@ -424,10 +426,35 @@ unique_ptr<Solucao> Instancia::buscaLocal(unique_ptr<Solucao> &sol)
                         {
                             if (tipoTurnos[outroTurno] != turnoCandOriginal)
                             {
+                                // salva valor da solucao original
+
+                                float penalidadeSolInicial = sol->getNota();
+
                                 // desaloca o atual, aloca o novo
 
-                                // se melhorar, passa a solucao nova pra essa func de novo
-                                // se nenhum melhorar, retorna a solucao
+                                desalocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
+                                unique_ptr<Candidato> newCand = make_unique<Candidato>(
+                                    nomeDia, tipoTurnos[outroTurno], habilidade,
+                                    semanas[semanaAtual].getDemandaMinima(nomeDia, tipoTurnos[outroTurno], habilidade),
+                                    semanas[semanaAtual].getDemandaOtima(nomeDia, tipoTurnos[outroTurno], habilidade), 0);
+                                alocaBuscaLocal(newCand, enfermeiro.first, semanas[semanaAtual], *sol);
+
+                                // se melhorar (DIMINUIR A PENALIDADE), passa a solucao nova pra essa func de novo
+
+                                sol->setNota(avaliaNota(*sol, semanaAtual));
+                                float penalidadeSolNova = sol->getNota();
+
+                                if (penalidadeSolInicial > penalidadeSolNova)
+                                {
+                                    buscaLocal(sol); // recomeça com essa nova solução
+                                }
+                                else
+                                {
+                                    // se não melhorar, desaloca o novo, volta o original e retorna a nota
+                                    desalocaBuscaLocal(newCand, enfermeiro.first, semanas[semanaAtual], *sol);
+                                    alocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
+                                    sol->setNota(avaliaNota(*sol, semanaAtual));
+                                }
                             }
                         }
                     }
@@ -435,6 +462,8 @@ unique_ptr<Solucao> Instancia::buscaLocal(unique_ptr<Solucao> &sol)
             }
         }
     }
+
+    sol->exibirAlocacoes();
 }
 
 void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
@@ -499,13 +528,6 @@ int Instancia::avaliaNota(Solucao &sol, int semanaAtual)
     }
 
     int penalidade = demandaOtimaFalta + preferenciasFalta + fdsIncompleto + (alocTotalFaltaMin + alocTotalAcimaMax) + fdsTotalAcimaMax;
-    std::cout << "demandaOtimaFalta: " << demandaOtimaFalta << std::endl;
-    std::cout << "preferenciasFalta: " << preferenciasFalta << std::endl;
-    std::cout << "fdsIncompleto: " << fdsIncompleto << std::endl;
-    std::cout << "alocTotalFaltaMin: " << alocTotalFaltaMin << std::endl;
-    std::cout << "alocTotalAcimaMax: " << alocTotalAcimaMax << std::endl;
-    std::cout << "fdsTotalAcimaMax: " << fdsTotalAcimaMax << std::endl;
-    cout << "Penalidade: " << penalidade << endl;
     return penalidade;
 }
 
@@ -603,14 +625,6 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
                 calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas());
             }
             ordenaVetorCand(candidatos);
-
-            // imprime pra eu ver esse progresso
-            cout << endl
-                 << endl;
-            for (int cand = 0; cand < candidatos.size(); cand++)
-            {
-                cout << "(" << candidatos[cand]->getDia() << ", " << candidatos[cand]->getTurno() << ", " << candidatos[cand]->getHabilidade() << ", " << candidatos[cand]->getValor() << ") ";
-            }
         }
     }
 
@@ -618,7 +632,8 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
     solucao->setNota(avaliaNota(*solucao, semanaAtual));
     solucao->exibirAlocacoes();
     buscaLocal(solucao);
-
+    cout << "Pos busca local: " << endl;
+    solucao->exibirAlocacoes();
     //      é isso, acho, essa função é rodada pra cada semana
     //      aplicar avaliador de viabilidade e qualidade
 }

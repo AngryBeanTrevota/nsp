@@ -81,7 +81,7 @@ public:
     void alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
     bool avaliaViabilidade(Solucao &sol);
     int avaliaNota(Solucao &sol, int semanaAtual);
-    unique_ptr<Solucao> buscaLocal(unique_ptr<Solucao> &sol);
+    void buscaLocal(unique_ptr<Solucao> &sol);
     vector<unique_ptr<Solucao>> guloso();
 };
 

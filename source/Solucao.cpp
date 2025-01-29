@@ -20,7 +20,7 @@ void Solucao::setId(const string &id)
 }
 
 // Getter para totalAlocacoes
-map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> Solucao::getTotalAlocacoes() const
+const map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> &Solucao::getTotalAlocacoes() const
 {
     return totalAlocacoes;
 }

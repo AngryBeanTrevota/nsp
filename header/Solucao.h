@@ -32,7 +32,11 @@ public:
     string getId() const;
     void setId(const string &id);
 
-    map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> getTotalAlocacoes() const;
+    const std::map<std::shared_ptr<Enfermeiro>,
+                   std::map<std::string,
+                            std::map<std::string,
+                                     std::map<std::string, bool>>>> &
+    getTotalAlocacoes() const;
     void setTotalAlocacoes(const map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> &alocacoes);
 
     Semana &getSemanaDemandas();

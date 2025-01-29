@@ -293,7 +293,7 @@ unique_ptr<Instancia> leInstanciaSemanasPeloCodigo(string codigo)
 int main()
 {
     // unique_ptr<Instancia> instancia = leitorArquivo("testdatasets_txt/n005w4/Sc-n005w4.txt");
-    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n005w4");
+    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n021w4");
     if (instancia)
     {
         instancia->gulosoSemana();
