@@ -218,24 +218,6 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
                                           5);
 
     cand->setValor(nota);
-
-    /*
-        // Imprimir valores intermediários
-        std::cout << endl
-                  << "Cand " << cand->getDia() << " " << cand->getTurno() << " " << cand->getHabilidade() << endl;
-        std::cout << "Quanto falta demanda mínima: " << quantoFaltaDemandaMin << std::endl;
-        std::cout << "Quanto falta demanda ótima: " << quantoFaltaDemandaOpt << std::endl;
-        std::cout << "Nota alocações consecutivas: " << notaAlocConsecutivas << std::endl;
-        std::cout << "Nota folgas consecutivas: " << notaFolgasConsecutivas << std::endl;
-        std::cout << "Nota preferência: " << notaPreferencia << std::endl;
-        std::cout << "Nota fim de semana completo: " << notaFdsCompleto << std::endl;
-        std::cout << "Nota total alocações: " << notaTotalAloc << std::endl;
-        std::cout << "Nota total fim de semana: " << notaTotalFds << std::endl;
-
-        // Imprimir nota final
-        std::cout << "Nota final: " << nota << endl
-                  << std::endl;
-    */
 }
 
 void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans)
@@ -391,8 +373,8 @@ void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<En
 
 void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
 {
-    const auto &totalAlocacoes = sol->getTotalAlocacoes();
 
+    const auto &totalAlocacoes = sol->getTotalAlocacoes();
     // percorrer todos os candidatos
     for (const auto &enfermeiro : totalAlocacoes)
     {
@@ -462,8 +444,6 @@ void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
             }
         }
     }
-
-    sol->exibirAlocacoes();
 }
 
 void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
@@ -479,10 +459,11 @@ void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
 bool Instancia::avaliaViabilidade(Solucao &sol)
 {
     bool viavel = false;
+    cout << "SOMA DEMANDA MÍNIMA: " << sol.getSemanaDemandas().somaDemandasMinimas();
     if (sol.getSemanaDemandas().somaDemandasMinimas() == 0)
     {
         viavel = true;
-        cout << "Solucao viável." << endl;
+        cout << "Solucao viavel." << endl;
     }
     else
     {
@@ -494,7 +475,6 @@ bool Instancia::avaliaViabilidade(Solucao &sol)
 
 int Instancia::avaliaNota(Solucao &sol, int semanaAtual)
 {
-
     // demanda otima não cumprida
     int demandaOtimaFalta = sol.getSemanaDemandas().somaDemandasOtimas();
 
@@ -631,9 +611,10 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
     solucao->setViavel(avaliaViabilidade(*solucao));
     solucao->setNota(avaliaNota(*solucao, semanaAtual));
     solucao->exibirAlocacoes();
+    solucao->getSemanaDemandas().imprimirPreferencias();
     buscaLocal(solucao);
     cout << "Pos busca local: " << endl;
-    solucao->exibirAlocacoes();
-    //      é isso, acho, essa função é rodada pra cada semana
-    //      aplicar avaliador de viabilidade e qualidade
+    // solucao->exibirAlocacoes();
+    //       é isso, acho, essa função é rodada pra cada semana
+    //       aplicar avaliador de viabilidade e qualidade
 }

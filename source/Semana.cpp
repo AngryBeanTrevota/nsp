@@ -96,10 +96,8 @@ int Semana::somaDemandasMinimas()
 
     for (const auto iteradorDia : demandas)
     {
-        cout << iteradorDia.first << ":\n";
         for (const auto iteradorTurnos : iteradorDia.second)
         {
-            cout << "  " << iteradorTurnos.first << ":\n";
             for (const auto iteradorDemanda : iteradorTurnos.second)
             {
                 if (iteradorDemanda.second.minimo >= 0)
@@ -119,10 +117,8 @@ int Semana::somaDemandasOtimas()
 
     for (const auto iteradorDia : demandas)
     {
-        cout << iteradorDia.first << ":\n";
         for (const auto iteradorTurnos : iteradorDia.second)
         {
-            cout << "  " << iteradorTurnos.first << ":\n";
             for (const auto iteradorDemanda : iteradorTurnos.second)
             {
                 if (iteradorDemanda.second.otima >= 0)
