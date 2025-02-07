@@ -24,6 +24,7 @@ private:
 
 public:
     // Métodos para gerenciar demandas
+    map<string, map<string, map<string, Demanda>>> getDemandas();
     void adicionarDemanda(const string dia, const string turno, const string habilidade, int minimo, int maximo);
     void setDemandaMinima(const string dia, const string turno, const string habilidade, int minimo);
     void setDemandaOtima(const string dia, const string turno, const string habilidade, int otima);

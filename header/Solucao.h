@@ -20,8 +20,10 @@ private:
     // nomeEnf -> dia -> turno -> hab -> true/false
     map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> totalAlocacoes;
     Semana semanaDemandas;
+    map<string, map<string, map<string, int>>> demandasSupridas;
     int nota;
     bool viavel;
+    int grauInviabilidade;
 
 public:
     // Construtores
@@ -48,9 +50,20 @@ public:
     bool getViavel();
     void setViavel(bool viavel);
 
+    map<string, map<string, map<string, int>>> getDemandasSupridas();
+    void setDemandasSupridas(map<string, map<string, map<string, int>>> demandasSupridas);
+
     // Métodos para manipular as alocações
     void adicionarAlocacao(shared_ptr<Enfermeiro> &nomesEnfermeiro, const string &dia, const string &turno, const string &hab, const bool &alocSimNao);
     void exibirAlocacoes() const;
+    void adicionarDemandaSuprida(const string dia, const string turno, const string habilidade, int val);
+    void incrementaDemandaSuprida(const string dia, const string turno, const string habilidade, int val);
+    void decrementaDemandaSuprida(const string dia, const string turno, const string habilidade, int val);
+    void imprimirDemandasSupridas() const;
+
+    // Avalia soluca
+
+    bool avaliaViabilidade();
 };
 
 #endif // SOLUCAO_H

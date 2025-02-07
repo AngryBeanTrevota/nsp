@@ -6,6 +6,8 @@
 #include "../header/Enfermeiro.h"
 #include "../header/Semana.h"
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -292,11 +294,16 @@ unique_ptr<Instancia> leInstanciaSemanasPeloCodigo(string codigo)
 
 int main()
 {
+    // seed pra randomizar coisas
+
+    int x = time(0);
+    srand(x);
+
     // unique_ptr<Instancia> instancia = leitorArquivo("testdatasets_txt/n005w4/Sc-n005w4.txt");
-    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n005w4");
+    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n012w8");
     if (instancia)
     {
-        instancia->gulosoSemana();
+        instancia->gulosoSemana(5);
     }
     else
     {

@@ -26,6 +26,7 @@ private:
     map<string, Contrato> tiposContratos;
     vector<shared_ptr<Enfermeiro>> enfermeiros;
     vector<Semana> semanas;
+    map<string, int> qtdEnfComHabilidade;
 
 public:
     Instancia(); // Construtor padrão
@@ -47,6 +48,7 @@ public:
     map<string, Contrato> getTiposContratos() const;
     vector<shared_ptr<Enfermeiro>> getEnfermeiros() const;
     vector<Semana> getSemanas() const;
+    map<string, int> getQtdEnfComHabilidade() const;
 
     // Setters
     void setTotalSemanas(int totalSemanas);
@@ -57,6 +59,7 @@ public:
     void setTiposContratos(const map<string, Contrato> &contratos);
     void setEnfermeiros(const vector<shared_ptr<Enfermeiro>> &enfermeiros);
     void setSemanas(const vector<Semana> &semanas);
+    void setQtdEnfComHabilidade(const map<string, int> qtdEnfComHabilidade);
 
     // Outros Métodos
     void adicionarContrato(const string &nomeContrato, const Contrato &contrato);
@@ -73,8 +76,8 @@ public:
 
     void ordenaEnfermeiros();
     string getDiaSemana(int i);
-    unique_ptr<Solucao> gulosoSemana();
-    void calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana);
+    unique_ptr<Solucao> gulosoSemana(int alfa);
+    void calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana, Solucao &sol);
     void ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos);
     void alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans);
     void desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
@@ -82,7 +85,7 @@ public:
     bool avaliaViabilidade(Solucao &sol);
     int avaliaNota(Solucao &sol, int semanaAtual);
     void buscaLocal(unique_ptr<Solucao> &sol);
-    vector<unique_ptr<Solucao>> guloso();
+    vector<unique_ptr<Solucao>> guloso(int alfa);
 };
 
 #endif // INSTANCIA_H

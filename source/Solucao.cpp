@@ -2,7 +2,7 @@
 #include "..\header\Alocacao.h"
 
 // Construtor padrão
-Solucao::Solucao() : id("") {}
+Solucao::Solucao() : id(""), grauInviabilidade(0) {}
 
 // Construtor com id
 Solucao::Solucao(const string &id) : id(id), totalAlocacoes() {}
@@ -45,6 +45,19 @@ Semana &Solucao::getSemanaDemandas()
 void Solucao::setSemanaDemandas(Semana semanaDemandas)
 {
     this->semanaDemandas = semanaDemandas;
+    map<string, map<string, map<string, Demanda>>> demandas = semanaDemandas.getDemandas();
+    for (const auto iteradorDia : demandas)
+    {
+        cout << iteradorDia.first << ":\n";
+        for (const auto iteradorTurnos : iteradorDia.second)
+        {
+            cout << "  " << iteradorTurnos.first << ":\n";
+            for (const auto iteradorDemanda : iteradorTurnos.second)
+            {
+                demandasSupridas[iteradorDia.first][iteradorTurnos.first][iteradorDemanda.first] = 0;
+            }
+        }
+    }
 }
 
 int Solucao::getNota()
@@ -64,6 +77,16 @@ bool Solucao::getViavel()
 void Solucao::setViavel(bool viavel)
 {
     this->viavel = viavel;
+}
+
+map<string, map<string, map<string, int>>> Solucao::getDemandasSupridas()
+{
+    return demandasSupridas;
+}
+
+void Solucao::setDemandasSupridas(map<string, map<string, map<string, int>>> demandasSupridas)
+{
+    this->demandasSupridas = demandasSupridas;
 }
 
 // Exibir todas as alocações
@@ -94,5 +117,67 @@ void Solucao::exibirAlocacoes() const
 
     cout << endl
          << "Viavel: " << (viavel ? "Sim" : "Nao") << endl;
+    cout << "Grau de Inviabilidade: " << grauInviabilidade << endl;
     cout << "Penalidade: " << nota << endl;
+}
+
+void Solucao::adicionarDemandaSuprida(const string dia, const string turno, const string habilidade, int val)
+{
+    demandasSupridas[dia][turno][habilidade] = val;
+}
+
+void Solucao::incrementaDemandaSuprida(const string dia, const string turno, const string habilidade, int val)
+{
+    demandasSupridas[dia][turno][habilidade] += val;
+}
+
+void Solucao::decrementaDemandaSuprida(const string dia, const string turno, const string habilidade, int val)
+{
+    demandasSupridas[dia][turno][habilidade] -= val;
+}
+
+void Solucao::imprimirDemandasSupridas() const
+{
+    // Map para armazenar demandas: dia -> turno -> habilidade -> Demanda
+    for (const auto iteradorDia : demandasSupridas)
+    {
+        cout << iteradorDia.first << ":\n";
+        for (const auto iteradorTurnos : iteradorDia.second)
+        {
+            cout << "  " << iteradorTurnos.first << ":\n";
+            for (const auto iteradorDemanda : iteradorTurnos.second)
+            {
+                cout << "    " << iteradorDemanda.first << " -> Suprido: " << iteradorDemanda.second << "\n";
+            }
+        }
+    }
+}
+
+bool Solucao::avaliaViabilidade()
+{
+    int contagem = 0;
+    for (const auto iteradorDia : demandasSupridas)
+    {
+        for (const auto iteradorTurnos : iteradorDia.second)
+        {
+            for (const auto iteradorDemanda : iteradorTurnos.second)
+            {
+                if (semanaDemandas.getDemandaMinima(iteradorDia.first, iteradorTurnos.first, iteradorDemanda.first) - demandasSupridas[iteradorDia.first][iteradorTurnos.first][iteradorDemanda.first] > 0)
+                {
+                    contagem++;
+                }
+            }
+        }
+    }
+
+    grauInviabilidade = contagem;
+
+    if (contagem == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

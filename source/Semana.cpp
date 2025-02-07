@@ -52,6 +52,11 @@ void Semana::imprimirPreferencias() const
     }
 }
 
+map<string, map<string, map<string, Demanda>>> Semana::getDemandas()
+{
+    return demandas;
+}
+
 void Semana::setDemandaMinima(const string dia, const string turno, const string habilidade, int minimo)
 {
     demandas[dia][turno][habilidade].minimo = minimo;

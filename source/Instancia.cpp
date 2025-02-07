@@ -2,10 +2,14 @@
 #include "..\header\Candidato.h"
 #include <algorithm>
 #include <memory>
+#include <random>
+#include <cstdlib>
 
 // Construtor
 Instancia::Instancia()
-    : totalSemanas(0), semanaAtual(0) {}
+    : totalSemanas(0), semanaAtual(0)
+{
+}
 
 Instancia::Instancia(
     int totalSemanas,
@@ -45,6 +49,12 @@ void Instancia::setTiposContratos(const map<string, Contrato> &contratos) { tipo
 void Instancia::setEnfermeiros(const vector<shared_ptr<Enfermeiro>> &enfermeiros) { this->enfermeiros = enfermeiros; }
 void Instancia::setSemanas(const vector<Semana> &semanas) { this->semanas = semanas; }
 
+int random(int min, int max)
+{
+    int randomNum = rand() % (max - min + 1) + min;
+    return randomNum;
+}
+
 bool encontraString(const vector<string> &vec, const string &val)
 {
     for (int i = 0; i < vec.size(); i++)
@@ -66,6 +76,10 @@ void Instancia::adicionarContrato(const string &nomeContrato, const Contrato &co
 void Instancia::adicionarEnfermeiro(const shared_ptr<Enfermeiro> enfermeiro)
 {
     enfermeiros.push_back(enfermeiro);
+    for (int i = 0; i < enfermeiro->getHabilidades().size(); i++)
+    {
+        qtdEnfComHabilidade[enfermeiro->getHabilidades()[i]] = qtdEnfComHabilidade[enfermeiro->getHabilidades()[i]] + 1;
+    }
 }
 
 void Instancia::adicionarSemana(const Semana &semana)
@@ -76,6 +90,7 @@ void Instancia::adicionarSemana(const Semana &semana)
 void Instancia::adicionarHabilidade(const string &habilidade)
 {
     habilidadesInstancia.push_back(habilidade);
+    qtdEnfComHabilidade[habilidade] = 0;
 }
 
 void Instancia::adicionarTurno(const string &turno)
@@ -113,6 +128,16 @@ bool Instancia::sequenciaTurnosEhImpossivel(string turnoI, string turnoJ)
     }
 }
 
+void Instancia::setQtdEnfComHabilidade(const map<string, int> qtdEnfComHabilidade)
+{
+    this->qtdEnfComHabilidade = qtdEnfComHabilidade;
+}
+
+map<string, int> Instancia::getQtdEnfComHabilidade() const
+{
+    return qtdEnfComHabilidade;
+}
+
 void Instancia::print() const
 {
     cout << "=== Instância ===" << endl;
@@ -120,9 +145,9 @@ void Instancia::print() const
     cout << "Semana atual: " << semanaAtual << endl;
 
     cout << "\nHabilidades da instância:" << endl;
-    for (const auto &habilidade : habilidadesInstancia)
+    for (const auto &par : qtdEnfComHabilidade)
     {
-        cout << " - " << habilidade << endl;
+        cout << par.first << " -> " << par.second << endl;
     }
 
     cout << "\nTipos de turnos:" << endl;
@@ -192,7 +217,7 @@ string Instancia::getDiaSemana(int i)
     }
 }
 
-void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana)
+void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana, Solucao &sol)
 {
     /*ordena esse vetor por ordenaVetorAlocacoes: quantoFaltaDemandaMin(se não faltar,
     considera a demanda ótima no segmento a seguir)
@@ -205,24 +230,45 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
 
     // considerar o caso turno sem ser none, turno fds e turno none
 
-    float quantoFaltaDemandaMin = (cand->getTurno() != "None" && cand->getDemandaMin() > 0) ? cand->getDemandaMin() : 0;                                                                          // h1 check
+    float quantoFaltaDemandaMin = (cand->getTurno() != "None") ? cand->getDemandaMin() : 0;                                                                                                       // h1 check
     float quantoFaltaDemandaOpt = (cand->getTurno() != "None") ? cand->getDemandaOpt() : 0;                                                                                                       // s1 check
     float notaPreferencia = semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()) && (cand->getTurno() == "None") ? 0 : 1;                                                 // s4 check
     float notaFdsCompleto = (cand->getTurno() != "None" && boolFds) ? 1 : 0;                                                                                                                      // s5
     float notaTotalAloc = (cand->getTurno() != "None") ? enf->getContrato().getMinAlocacoes() - enf->getTotalAloc() : 0;                                                                          // s6
     float notaTotalFds = (cand->getTurno() != "None" && (cand->getDia() == "Sat" || cand->getDia() == "Sun")) ? enf->getContrato().getMaxAlocacoesFimSemana() - enf->getTotalAlocFimSemana() : 0; // s7
+    float notaHabilidadeRara = (cand->getTurno() != "None") ? (qtdEnfComHabilidade[cand->getHabilidade()] / habilidadesInstancia.size()) : 0;
+    float nota;
+    // se não viável
 
-    float nota = quantoFaltaDemandaMin + ((quantoFaltaDemandaOpt +
-                                           notaPreferencia + notaFdsCompleto +
-                                           notaTotalAloc + notaTotalFds) /
-                                          5);
+    if (!avaliaViabilidade(sol))
+    {
+        // if(quantoFaltaDemandaMin > 0) -> nota abaixo
+        // else nota = 0
+        if (quantoFaltaDemandaMin > 0)
+        {
+            nota = quantoFaltaDemandaMin + notaHabilidadeRara + ((quantoFaltaDemandaOpt + notaPreferencia + notaFdsCompleto + notaTotalAloc + notaTotalFds) / 5);
+        }
+        else
+        {
+            nota = 0;
+        }
+    }
+    else
+    {
+        // se viável
+        // td mundo nota abaixo sem demanda min
+        nota = notaHabilidadeRara + quantoFaltaDemandaOpt +
+               notaPreferencia + notaFdsCompleto +
+               notaTotalAloc + notaTotalFds;
+    }
+
+    // cout << "(" << cand->getDia() << ", " << cand->getTurno() << ", " << cand->getHabilidade() << ") : " << quantoFaltaDemandaMin << "/ " << cand->getDemandaMin() << "/ nota: " << nota << endl;
 
     cand->setValor(nota);
 }
 
 void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans)
 {
-
     // REMOVE CANDS AGORA IMPOSSÍVEIS
 
     // Faz alocação na solução
@@ -232,14 +278,11 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
     // AJUSTA DEMANDA
 
     // if(cand->getTurno() != "None"
-    // semana.alocacao(dia, turno, hab) que remove 1 tanto do mínimo quanto do ótimo
+    // semana.alocacao(dia, turno, hab) que incrementa o supridos em 1
 
     if (cand->getTurno() != "None")
     {
-        int novoValMin = semana.getDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) - 1;
-        semana.setDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValMin);
-        int novoValOpt = semana.getDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) - 1;
-        semana.setDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValOpt);
+        sol.incrementaDemandaSuprida(cand->getDia(), cand->getTurno(), cand->getHabilidade(), 1);
 
         // AJUSTA ENFERMEIRO
 
@@ -458,17 +501,7 @@ void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
 
 bool Instancia::avaliaViabilidade(Solucao &sol)
 {
-    bool viavel = false;
-    cout << "SOMA DEMANDA MÍNIMA: " << sol.getSemanaDemandas().somaDemandasMinimas();
-    if (sol.getSemanaDemandas().somaDemandasMinimas() == 0)
-    {
-        viavel = true;
-        cout << "Solucao viavel." << endl;
-    }
-    else
-    {
-        cout << "Solucao inviavel." << endl;
-    }
+    bool viavel = sol.avaliaViabilidade();
 
     return viavel;
 }
@@ -511,13 +544,13 @@ int Instancia::avaliaNota(Solucao &sol, int semanaAtual)
     return penalidade;
 }
 
-vector<unique_ptr<Solucao>> Instancia::guloso()
+vector<unique_ptr<Solucao>> Instancia::guloso(int alfa)
 {
     vector<unique_ptr<Solucao>> solucoesSemanas;
     for (int i = 0; i < semanas.size(); i++)
     {
         setSemanaAtual(i);
-        unique_ptr<Solucao> sol = gulosoSemana();
+        unique_ptr<Solucao> sol = gulosoSemana(alfa);
         cout << endl
              << "--------SEMANA " << semanaAtual << ": ---------" << endl;
         sol->exibirAlocacoes();
@@ -527,7 +560,7 @@ vector<unique_ptr<Solucao>> Instancia::guloso()
     return solucoesSemanas;
 }
 
-unique_ptr<Solucao> Instancia::gulosoSemana()
+unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
 {
     // criar a solução
 
@@ -564,8 +597,8 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
                     {
                         unique_ptr<Candidato> cand = make_unique<Candidato>(
                             getDiaSemana(dia), tipoTurnos[turno], habilidadesInstancia[hab],
-                            semanas[semanaAtual].getDemandaMinima(getDiaSemana(dia), tipoTurnos[turno], habilidadesInstancia[hab]),
-                            semanas[semanaAtual].getDemandaOtima(getDiaSemana(dia), tipoTurnos[turno], habilidadesInstancia[hab]), 0);
+                            semanas[semanaAtual].getDemandaMinima(getDiaSemana(dia), tipoTurnos[turno], habilidadesInstancia[hab]) - solucao->getDemandasSupridas()[getDiaSemana(dia)][tipoTurnos[turno]][habilidadesInstancia[hab]],
+                            semanas[semanaAtual].getDemandaOtima(getDiaSemana(dia), tipoTurnos[turno], habilidadesInstancia[hab]) - solucao->getDemandasSupridas()[getDiaSemana(dia)][tipoTurnos[turno]][habilidadesInstancia[hab]], 0);
                         candidatos.push_back(move(cand));
                         // setta os booleanos como falso inicialmente, pra serem alterados quando aloca
                         mapBooleans[getDiaSemana(dia)][tipoTurnos[turno]][habilidadesInstancia[hab]] = false;
@@ -582,7 +615,7 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
         for (int cand = 0; cand < candidatos.size(); cand++)
         {
             unique_ptr<Candidato> &candPtr = candidatos[cand];
-            calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas());
+            calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
         }
 
         // função ordenaVetorCand() ordena com base na nota
@@ -595,14 +628,27 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
 
         while (!candidatos.empty())
         {
+            // verifica se o número de candidatos > alfa
+
+            int indiceSelecionado;
+            if (candidatos.size() > alfa)
+            {
+                indiceSelecionado = random(0, alfa - 1);
+            }
+            else
+            {
+                indiceSelecionado = random(0, candidatos.size() - 1);
+            }
+            // sorteia um número aleatório entre 0 e alfa
+
             // aloca primeiro candidato
-            alocaCandidato(candidatos[0], enfermeiros[i], solucao->getSemanaDemandas(), *solucao, candidatos, mapBooleans);
+            alocaCandidato(candidatos[indiceSelecionado], enfermeiros[i], solucao->getSemanaDemandas(), *solucao, candidatos, mapBooleans);
             // refaz a nota do resto
             // reordena vetor
             for (int cand = 0; cand < candidatos.size(); cand++)
             {
                 unique_ptr<Candidato> &candPtr = candidatos[cand];
-                calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas());
+                calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
             }
             ordenaVetorCand(candidatos);
         }
@@ -611,9 +657,9 @@ unique_ptr<Solucao> Instancia::gulosoSemana()
     solucao->setViavel(avaliaViabilidade(*solucao));
     solucao->setNota(avaliaNota(*solucao, semanaAtual));
     solucao->exibirAlocacoes();
-    solucao->getSemanaDemandas().imprimirPreferencias();
-    buscaLocal(solucao);
-    cout << "Pos busca local: " << endl;
+    cout << endl
+         << "demandas supridas: " << endl;
+    solucao->imprimirDemandasSupridas();
     // solucao->exibirAlocacoes();
     //       é isso, acho, essa função é rodada pra cada semana
     //       aplicar avaliador de viabilidade e qualidade
