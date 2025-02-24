@@ -1,9 +1,12 @@
 #include "..\header\Instancia.h"
 #include "..\header\Candidato.h"
+#include "..\header\SolucaoCompleta.h"
 #include <algorithm>
 #include <memory>
 #include <random>
 #include <cstdlib>
+#include <iostream>
+#include <fstream>
 
 // Construtor
 Instancia::Instancia()
@@ -240,7 +243,7 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
     float nota;
     // se não viável
 
-    if (!avaliaViabilidade(sol))
+    if (!sol.avaliaViabilidade())
     {
         // if(quantoFaltaDemandaMin > 0) -> nota abaixo
         // else nota = 0
@@ -261,8 +264,6 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
                notaPreferencia + notaFdsCompleto +
                notaTotalAloc + notaTotalFds;
     }
-
-    // cout << "(" << cand->getDia() << ", " << cand->getTurno() << ", " << cand->getHabilidade() << ") : " << quantoFaltaDemandaMin << "/ " << cand->getDemandaMin() << "/ nota: " << nota << endl;
 
     cand->setValor(nota);
 }
@@ -466,7 +467,7 @@ void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
 
                                 // se melhorar (DIMINUIR A PENALIDADE), passa a solucao nova pra essa func de novo
 
-                                sol->setNota(avaliaNota(*sol, semanaAtual));
+                                // sol->setNota(avaliaNota(*sol, semanaAtual));
                                 float penalidadeSolNova = sol->getNota();
 
                                 if (penalidadeSolInicial > penalidadeSolNova)
@@ -478,7 +479,7 @@ void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
                                     // se não melhorar, desaloca o novo, volta o original e retorna a nota
                                     desalocaBuscaLocal(newCand, enfermeiro.first, semanas[semanaAtual], *sol);
                                     alocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
-                                    sol->setNota(avaliaNota(*sol, semanaAtual));
+                                    // sol->setNota(avaliaNota(*sol, semanaAtual));
                                 }
                             }
                         }
@@ -506,10 +507,24 @@ bool Instancia::avaliaViabilidade(Solucao &sol)
     return viavel;
 }
 
-int Instancia::avaliaNota(Solucao &sol, int semanaAtual)
+int Instancia::avaliaNota(vector<Solucao> &sol)
 {
-    // demanda otima não cumprida
-    int demandaOtimaFalta = sol.getSemanaDemandas().somaDemandasOtimas();
+    // demanda otima não cumprida (ver de cada semana)
+    int demandaOtimaFalta = 0;
+    cout << "qtd semanas: " << sol.size() << endl;
+
+    for (int i = 0; i < sol.size(); i++)
+    {
+        cout << endl
+             << "Semana " << i << " demandas faltando: " << endl;
+        // fazer método em solucao que retorne o que falta da demanda ótima
+        demandaOtimaFalta += sol[i].somaDemandasOtimasFaltando();
+    }
+    std::cout << "demandaOtimaFalta: " << demandaOtimaFalta << std::endl;
+    if (demandaOtimaFalta < 0)
+    {
+        demandaOtimaFalta = 0;
+    }
 
     // coisas do enfermeiro
 
@@ -540,24 +555,132 @@ int Instancia::avaliaNota(Solucao &sol, int semanaAtual)
         }
     }
 
+    std::cout << "preferenciasFalta: " << preferenciasFalta << std::endl;
+    std::cout << "fdsIncompleto: " << fdsIncompleto << std::endl;
+    std::cout << "alocTotalFaltaMin: " << alocTotalFaltaMin << std::endl;
+    std::cout << "alocTotalAcimaMax: " << alocTotalAcimaMax << std::endl;
+    std::cout << "fdsTotalAcimaMax: " << fdsTotalAcimaMax << std::endl;
+
     int penalidade = demandaOtimaFalta + preferenciasFalta + fdsIncompleto + (alocTotalFaltaMin + alocTotalAcimaMax) + fdsTotalAcimaMax;
     return penalidade;
 }
 
-vector<unique_ptr<Solucao>> Instancia::guloso(int alfa)
+void Instancia::registraSolucao(vector<Solucao> &solucoes, string codigoInstancia, int numeroIteracao)
 {
-    vector<unique_ptr<Solucao>> solucoesSemanas;
+    ofstream outputFile;
+    outputFile.open("saidaGulosoRand.txt", ios::app);
+
+    cout << "BBBBBBB" << endl;
+
+    if (!outputFile.is_open())
+    {
+        cerr << "Erro ao abrir output.txt" << endl;
+        return;
+    }
+
+    cout << endl
+         << endl
+         << "depois erro, ou seja, abriu" << endl
+         << endl;
+
+    outputFile << "-------Instância " << codigoInstancia << " iteração " << numeroIteracao << "-------\n\n";
+
+    outputFile << "---viabilidade:\n\n";
+
+    int grauInviabilidade = 0;
     for (int i = 0; i < semanas.size(); i++)
     {
-        setSemanaAtual(i);
-        unique_ptr<Solucao> sol = gulosoSemana(alfa);
+        Solucao &solAtual = solucoes[i];
+
+        outputFile << "semana " << i + 1 << ": " << (solAtual.avaliaViabilidade() ? "sim" : "não")
+                   << " (grau de inviabilidade " << solAtual.getGrauInviabilidade() << ")\n";
+        grauInviabilidade += solAtual.getGrauInviabilidade();
+    }
+
+    outputFile << "\n---penalidade\n\n";
+
+    int demandaOtimaFalta = 0;
+
+    outputFile << "-falta demanda ótima por semana:\n\n";
+    for (int i = 0; i < solucoes.size(); i++)
+    {
+        Solucao &solAtual = solucoes[i];
+        int demandaOtimaFaltaSemana = solAtual.somaDemandasOtimasFaltando();
+        outputFile << "semana " << i + 1 << ": " << demandaOtimaFaltaSemana << "\n";
+        demandaOtimaFalta += demandaOtimaFaltaSemana;
+    }
+
+    // coisas do enfermeiro
+
+    int preferenciasFalta = 0;
+    int fdsIncompleto = 0;
+    int alocTotalFaltaMin = 0;
+    int alocTotalAcimaMax = 0;
+    int fdsTotalAcimaMax = 0;
+
+    for (int i = 0; i < enfermeiros.size(); i++)
+    {
+        preferenciasFalta += enfermeiros[i]->getTotalTurnosContraPref();
+        fdsIncompleto += enfermeiros[i]->getTotalFdsIncompleto();
+        if (enfermeiros[i]->getTotalAloc() <= enfermeiros[i]->getContrato().getMinAlocacoes())
+        {
+            alocTotalFaltaMin += enfermeiros[i]->getContrato().getMinAlocacoes() - enfermeiros[i]->getTotalAloc();
+        }
+        else
+        {
+            if (enfermeiros[i]->getTotalAloc() > enfermeiros[i]->getContrato().getMaxAlocacoes())
+            {
+                alocTotalAcimaMax += enfermeiros[i]->getTotalAloc() - enfermeiros[i]->getContrato().getMaxAlocacoes();
+            }
+        }
+        if (enfermeiros[i]->getTotalAlocFimSemana() > enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana())
+        {
+            fdsTotalAcimaMax += enfermeiros[i]->getTotalAlocFimSemana() - enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana();
+        }
+    }
+
+    outputFile << "-geral:\n\n";
+    outputFile << "demandaOtimaFalta: " << demandaOtimaFalta << "\n";
+    outputFile << "preferenciasFalta: " << preferenciasFalta << "\n";
+    outputFile << "fdsIncompleto: " << fdsIncompleto << "\n";
+    outputFile << "alocTotalFaltaMin: " << alocTotalFaltaMin << "\n";
+    outputFile << "alocTotalAcimaMax: " << alocTotalAcimaMax << "\n";
+    outputFile << "fdsTotalAcimaMax: " << fdsTotalAcimaMax << "\n\n";
+
+    int penalidade = demandaOtimaFalta + preferenciasFalta + fdsIncompleto + (alocTotalFaltaMin + alocTotalAcimaMax) + fdsTotalAcimaMax;
+
+    outputFile << "\n---conclusão\n\n";
+    outputFile << "viável: " << ((grauInviabilidade == 0) ? "sim" : "não") << "\n";
+    outputFile << "grau de inviabilidade: " << grauInviabilidade << "\n";
+    outputFile << "penalidade: " << penalidade << "\n\n";
+    outputFile << "-------------------------------------------\n\n";
+
+    outputFile.close();
+}
+
+unique_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
+{
+    unique_ptr<SolucaoCompleta> solCompleta = make_unique<SolucaoCompleta>(this->enfermeiros);
+    for (int i = 0; i < semanas.size(); i++)
+    {
         cout << endl
              << "--------SEMANA " << semanaAtual << ": ---------" << endl;
+        setSemanaAtual(i);
+        unique_ptr<Solucao> sol = gulosoSemana(alfa);
         sol->exibirAlocacoes();
-        cout << "Viavel: " << (avaliaViabilidade(*sol) ? "Sim" : "Nao") << "/ Penalidade: " << avaliaNota(*sol, semanaAtual) << endl;
-        solucoesSemanas.push_back(move(sol));
+        // TENHO QUE PASSAR A AVALIÇÃO PRA FORA E AVALIAR VIABILIDADE FORA TBM
+        solCompleta->adicionaSolucaoSemana(*sol);
+        semanaAtual++;
     }
-    return solucoesSemanas;
+    bool viavel = true;
+    vector<Solucao> &solucoesSemanas = solCompleta->getSolucoesSemana();
+    for (int j = 0; j < solucoesSemanas.size(); j++)
+    {
+        viavel = viavel && solucoesSemanas[j].avaliaViabilidade();
+    }
+    cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << avaliaNota(solucoesSemanas) << endl;
+    registraSolucao(solucoesSemanas, "n005w4", 1);
+    return solCompleta;
 }
 
 unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
@@ -576,8 +699,6 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
 
     for (int i = 0; i < enfermeiros.size(); i++)
     {
-        cout << endl
-             << "Enfermeiro " << enfermeiros[i]->getCodigo() << " demandas: " << endl;
         // cria vetor com os trios dia/turno/habilidade (apenas com as habilidades que o enfermeiro em questão tem)
         vector<unique_ptr<Candidato>> candidatos;
         // eu deveria criar um map pra guardar os bools? dia->turno->habilidade->nomeBool;
@@ -606,9 +727,6 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
                 }
             }
         }
-
-        cout << endl
-             << endl;
 
         // função calculaValorCand(Candidato &cand) -> void muda a nota de acordo com o valor
         // calcula a nota pra todos os candidatos
@@ -654,13 +772,10 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
         }
     }
 
-    solucao->setViavel(avaliaViabilidade(*solucao));
-    solucao->setNota(avaliaNota(*solucao, semanaAtual));
     solucao->exibirAlocacoes();
-    cout << endl
-         << "demandas supridas: " << endl;
-    solucao->imprimirDemandasSupridas();
     // solucao->exibirAlocacoes();
     //       é isso, acho, essa função é rodada pra cada semana
     //       aplicar avaliador de viabilidade e qualidade
+
+    return solucao;
 }

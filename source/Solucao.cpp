@@ -19,6 +19,11 @@ void Solucao::setId(const string &id)
     this->id = id;
 }
 
+int Solucao::getGrauInviabilidade()
+{
+    return this->grauInviabilidade;
+}
+
 // Getter para totalAlocacoes
 const map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> &Solucao::getTotalAlocacoes() const
 {
@@ -48,10 +53,8 @@ void Solucao::setSemanaDemandas(Semana semanaDemandas)
     map<string, map<string, map<string, Demanda>>> demandas = semanaDemandas.getDemandas();
     for (const auto iteradorDia : demandas)
     {
-        cout << iteradorDia.first << ":\n";
         for (const auto iteradorTurnos : iteradorDia.second)
         {
-            cout << "  " << iteradorTurnos.first << ":\n";
             for (const auto iteradorDemanda : iteradorTurnos.second)
             {
                 demandasSupridas[iteradorDia.first][iteradorTurnos.first][iteradorDemanda.first] = 0;
@@ -118,7 +121,6 @@ void Solucao::exibirAlocacoes() const
     cout << endl
          << "Viavel: " << (viavel ? "Sim" : "Nao") << endl;
     cout << "Grau de Inviabilidade: " << grauInviabilidade << endl;
-    cout << "Penalidade: " << nota << endl;
 }
 
 void Solucao::adicionarDemandaSuprida(const string dia, const string turno, const string habilidade, int val)
@@ -174,10 +176,40 @@ bool Solucao::avaliaViabilidade()
 
     if (contagem == 0)
     {
+        this->viavel = true;
         return true;
     }
     else
     {
+        this->viavel = false;
         return false;
     }
+}
+
+int Solucao::somaDemandasOtimasFaltando()
+{
+    int contador = 0;
+
+    for (const auto iteradorDia : demandasSupridas)
+    {
+        for (const auto iteradorTurnos : iteradorDia.second)
+        {
+            for (const auto iteradorDemanda : iteradorTurnos.second)
+            {
+                int demandaOtima = semanaDemandas.getDemandaOtima(iteradorDia.first, iteradorTurnos.first, iteradorDemanda.first);
+                int suprido = demandasSupridas[iteradorDia.first][iteradorTurnos.first][iteradorDemanda.first];
+
+                if (suprido < demandaOtima)
+                {
+                    int faltando = demandaOtima - suprido;
+                    contador += faltando;
+                    cout << iteradorDia.first << iteradorTurnos.first << iteradorDemanda.first << endl;
+                    cout << iteradorDia.first << " " << iteradorTurnos.first << " " << iteradorDemanda.first << endl;
+                    cout << "Demanda ótima não cumprida pois a demanda é " << demandaOtima << " e foi suprido " << suprido << endl;
+                }
+            }
+        }
+    }
+
+    return contador;
 }

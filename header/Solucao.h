@@ -8,6 +8,7 @@
 #include "Alocacao.h"
 #include "Semana.h"
 #include "Enfermeiro.h"
+#include "EnfermeiroProgresso.h"
 #include <memory>
 
 using namespace std;
@@ -21,6 +22,7 @@ private:
     map<shared_ptr<Enfermeiro>, map<string, map<string, map<string, bool>>>> totalAlocacoes;
     Semana semanaDemandas;
     map<string, map<string, map<string, int>>> demandasSupridas;
+    map<string, EnfermeiroProgresso> progressoEnfermeiros;
     int nota;
     bool viavel;
     int grauInviabilidade;
@@ -47,6 +49,8 @@ public:
     int getNota();
     void setNota(int nota);
 
+    int getGrauInviabilidade();
+
     bool getViavel();
     void setViavel(bool viavel);
 
@@ -64,6 +68,7 @@ public:
     // Avalia soluca
 
     bool avaliaViabilidade();
+    int somaDemandasOtimasFaltando();
 };
 
 #endif // SOLUCAO_H

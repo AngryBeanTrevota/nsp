@@ -300,10 +300,10 @@ int main()
     srand(x);
 
     // unique_ptr<Instancia> instancia = leitorArquivo("testdatasets_txt/n005w4/Sc-n005w4.txt");
-    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n012w8");
+    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n005w4");
     if (instancia)
     {
-        instancia->gulosoSemana(5);
+        instancia->guloso(2);
     }
     else
     {

@@ -11,6 +11,7 @@
 #include "Semana.h"
 #include "Solucao.h"
 #include "Candidato.h"
+#include "SolucaoCompleta.h"
 
 using namespace std;
 
@@ -83,9 +84,10 @@ public:
     void desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
     void alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
     bool avaliaViabilidade(Solucao &sol);
-    int avaliaNota(Solucao &sol, int semanaAtual);
+    int avaliaNota(vector<Solucao> &sol);
+    void registraSolucao(vector<Solucao> &solucoes, string codigoInstancia, int numeroIteracao);
     void buscaLocal(unique_ptr<Solucao> &sol);
-    vector<unique_ptr<Solucao>> guloso(int alfa);
+    unique_ptr<SolucaoCompleta> guloso(int alfa);
 };
 
 #endif // INSTANCIA_H

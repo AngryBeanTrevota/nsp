@@ -51,6 +51,7 @@
     "unordered_map": "cpp",
     "algorithm": "cpp",
     "list": "cpp",
-    "xhash": "cpp"
+    "xhash": "cpp",
+    "random": "cpp"
   }
 }
