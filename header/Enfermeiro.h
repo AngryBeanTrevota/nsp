@@ -17,10 +17,6 @@ private:
 
     // Valores de progresso do enfermeiro
 
-    int totalAloc;
-    int totalAlocFimSemana;
-    int totalTurnosContraPref;
-    int totalFdsIncompleto;
     string ultimoTurnoTrabalhado;
     int seguidosUltimoTurnoTrabalhado;
     int turnosSeguidos;
@@ -32,10 +28,6 @@ public:
         const string &codigo,
         Contrato &contrato,
         vector<string> &habilidades,
-        int &totalAloc,
-        int &totalAlocFimSemana,
-        int &totalTurnosContraPref,
-        int &totalFdsIncompleto,
         string &ultimoTurnoTrabalhado,
         int &seguidosUltimoTurnoTrabalhado,
         int &turnosSeguidos,
@@ -45,10 +37,6 @@ public:
     string getCodigo();
     Contrato getContrato();
     vector<string> getHabilidades();
-    int getTotalAloc();
-    int getTotalAlocFimSemana();
-    int getTotalTurnosContraPref();
-    int getTotalFdsIncompleto();
     string getUltimoTurnoTrabalhado();
     int getSeguidosUltimoTurnoTrabalhado();
     int getTurnosSeguidos();
@@ -58,10 +46,6 @@ public:
     void setCodigo(string codigo);
     void setContrato(Contrato contrato);
     void setHabilidades(vector<string> habilidades);
-    void setTotalAloc(int totalAloc);
-    void setTotalAlocFimSemana(int totalAlocFimSemana);
-    void setTotalTurnosContraPref(int totalTurnosContraPref);
-    void setTotalFdsIncompleto(int totalFdsIncompleto);
     void setUltimoTurnoTrabalhado(string ultimoTurnoTrabalhado);
     void setSeguidosUltimoTurnoTrabalhado(int seguidosUltimoTurnoTrabalhado);
     void setTurnosSeguidos(int turnosSeguidos);

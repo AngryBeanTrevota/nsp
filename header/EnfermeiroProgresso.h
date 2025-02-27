@@ -22,6 +22,12 @@ public:
                                          totalTurnosContraPref(0),
                                          totalFdsIncompleto(0) {}
 
+    EnfermeiroProgresso()
+        : codigo(""), totalAloc(0), totalAlocFimSemana(0),
+          totalTurnosContraPref(0), totalFdsIncompleto(0)
+    {
+    }
+
     // Getters
     string getCodigo() const { return codigo; }
     int getTotalAloc() const { return totalAloc; }

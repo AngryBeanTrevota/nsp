@@ -12,6 +12,7 @@
 #include "Solucao.h"
 #include "Candidato.h"
 #include "SolucaoCompleta.h"
+#include "EnfermeiroProgresso.h"
 
 using namespace std;
 
@@ -75,17 +76,17 @@ public:
 
     // as coisas de verdade
 
-    void ordenaEnfermeiros();
+    void ordenaEnfermeiros(map<string, EnfermeiroProgresso> &enfProgresso);
     string getDiaSemana(int i);
-    unique_ptr<Solucao> gulosoSemana(int alfa);
-    void calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana, Solucao &sol);
+    unique_ptr<Solucao> gulosoSemana(int alfa, map<string, EnfermeiroProgresso> &enfProgresso);
+    void calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, bool boolFds, const Semana &semana, Solucao &sol);
     void ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos);
-    void alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans);
-    void desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
-    void alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol);
+    void alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans);
+    void desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol);
+    void alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol);
     bool avaliaViabilidade(Solucao &sol);
-    int avaliaNota(vector<Solucao> &sol);
-    void registraSolucao(vector<Solucao> &solucoes, string codigoInstancia, int numeroIteracao);
+    int avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso> &enfProgMap);
+    void registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao);
     void buscaLocal(unique_ptr<Solucao> &sol);
     unique_ptr<SolucaoCompleta> guloso(int alfa);
 };

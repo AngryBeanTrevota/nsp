@@ -188,12 +188,24 @@ void Instancia::print() const
 
 // aqui começa a brincadeira hihihi
 
-void Instancia::ordenaEnfermeiros()
+void Instancia::ordenaEnfermeiros(map<string, EnfermeiroProgresso> &enfProgresso)
 {
     sort(enfermeiros.begin(), enfermeiros.end(),
-         [](shared_ptr<Enfermeiro> a, shared_ptr<Enfermeiro> b)
+         [&enfProgresso](shared_ptr<Enfermeiro> a, shared_ptr<Enfermeiro> b)
          {
-             return (a->getContrato().getMinAlocacoes() - a->getTotalAloc()) > (b->getContrato().getMinAlocacoes() - a->getTotalAloc()); // Ordem decrescente
+             int progressoA = enfProgresso[a->getCodigo()].getTotalAloc();
+             int progressoB = enfProgresso[b->getCodigo()].getTotalAloc();
+
+             int flexibilidadeA = a->getHabilidades().size();
+             int flexibilidadeB = b->getHabilidades().size();
+
+             // Ordenando de forma decrescente (maior diferença primeiro)
+             /*
+             return (a->getContrato().getMinAlocacoes() - progressoA) >
+                    (b->getContrato().getMinAlocacoes() - progressoB);
+            */
+
+             return (flexibilidadeA < flexibilidadeB);
          });
 }
 
@@ -220,7 +232,7 @@ string Instancia::getDiaSemana(int i)
     }
 }
 
-void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, bool boolFds, const Semana &semana, Solucao &sol)
+void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, bool boolFds, const Semana &semana, Solucao &sol)
 {
     /*ordena esse vetor por ordenaVetorAlocacoes: quantoFaltaDemandaMin(se não faltar,
     considera a demanda ótima no segmento a seguir)
@@ -233,12 +245,12 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
 
     // considerar o caso turno sem ser none, turno fds e turno none
 
-    float quantoFaltaDemandaMin = (cand->getTurno() != "None") ? cand->getDemandaMin() : 0;                                                                                                       // h1 check
-    float quantoFaltaDemandaOpt = (cand->getTurno() != "None") ? cand->getDemandaOpt() : 0;                                                                                                       // s1 check
-    float notaPreferencia = semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()) && (cand->getTurno() == "None") ? 0 : 1;                                                 // s4 check
-    float notaFdsCompleto = (cand->getTurno() != "None" && boolFds) ? 1 : 0;                                                                                                                      // s5
-    float notaTotalAloc = (cand->getTurno() != "None") ? enf->getContrato().getMinAlocacoes() - enf->getTotalAloc() : 0;                                                                          // s6
-    float notaTotalFds = (cand->getTurno() != "None" && (cand->getDia() == "Sat" || cand->getDia() == "Sun")) ? enf->getContrato().getMaxAlocacoesFimSemana() - enf->getTotalAlocFimSemana() : 0; // s7
+    float quantoFaltaDemandaMin = (cand->getTurno() != "None") ? cand->getDemandaMin() : 0;                                                                                                          // h1 check
+    float quantoFaltaDemandaOpt = (cand->getTurno() != "None") ? cand->getDemandaOpt() : 0;                                                                                                          // s1 check
+    float notaPreferencia = semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()) && (cand->getTurno() == "None") ? 0 : 1;                                                    // s4 check
+    float notaFdsCompleto = (cand->getTurno() != "None" && boolFds) ? 1 : 0;                                                                                                                         // s5
+    float notaTotalAloc = (cand->getTurno() != "None") ? enf->getContrato().getMinAlocacoes() - enfProg.getTotalAloc() : 0;                                                                          // s6
+    float notaTotalFds = (cand->getTurno() != "None" && (cand->getDia() == "Sat" || cand->getDia() == "Sun")) ? enf->getContrato().getMaxAlocacoesFimSemana() - enfProg.getTotalAlocFimSemana() : 0; // s7
     float notaHabilidadeRara = (cand->getTurno() != "None") ? (qtdEnfComHabilidade[cand->getHabilidade()] / habilidadesInstancia.size()) : 0;
     float nota;
     // se não viável
@@ -268,7 +280,7 @@ void Instancia::calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<E
     cand->setValor(nota);
 }
 
-void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans)
+void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans)
 {
     // REMOVE CANDS AGORA IMPOSSÍVEIS
 
@@ -290,7 +302,7 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
         // totais:
         // if(cand->getTurno() != "None") incrementa alocTotal
 
-        enf->setTotalAloc(enf->getTotalAloc() + 1);
+        enfProg.setTotalAloc(enfProg.getTotalAloc() + 1);
     }
 
     // pref:
@@ -298,7 +310,7 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
 
     if (semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()))
     {
-        enf->setTotalTurnosContraPref(enf->getTotalTurnosContraPref() + 1);
+        enfProg.setTotalTurnosContraPref(enfProg.getTotalTurnosContraPref() + 1);
     }
 
     // Fds:
@@ -330,7 +342,7 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
 
     if (cand->getDia() == "Sat" || cand->getDia() == "Sun")
     {
-        enf->setTotalAlocFimSemana(enf->getTotalAlocFimSemana() + 1);
+        enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() + 1);
     }
 
     // Percorre toda lista de candidatos
@@ -353,7 +365,7 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
     // FUNCIONA ATÉ AQUI ---------------------------------------------------------------------------------------
 }
 
-void Instancia::desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol)
+void Instancia::desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol)
 {
     // REMOVE A ALOCAÇÃO DA SOLUÇÃO
     sol.adicionarAlocacao(enf, cand->getDia(), cand->getTurno(), cand->getHabilidade(), false);
@@ -368,23 +380,23 @@ void Instancia::desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr
         semana.setDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValOpt);
 
         // REDUZ TOTAL DE ALOCAÇÕES DO ENFERMEIRO
-        enf->setTotalAloc(enf->getTotalAloc() - 1);
+        enfProg.setTotalAloc(enfProg.getTotalAloc() - 1);
     }
 
     // AJUSTA TURNOS CONTRA PREFERÊNCIA
     if (semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()))
     {
-        enf->setTotalTurnosContraPref(enf->getTotalTurnosContraPref() - 1);
+        enfProg.setTotalTurnosContraPref(enfProg.getTotalTurnosContraPref() - 1);
     }
 
     // AJUSTA FINAIS DE SEMANA
     if (cand->getDia() == "Sat" || cand->getDia() == "Sun")
     {
-        enf->setTotalAlocFimSemana(enf->getTotalAlocFimSemana() - 1);
+        enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() - 1);
     }
 }
 
-void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, Semana &semana, Solucao &sol)
+void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol)
 {
     // ADICIONA A ALOCAÇÃO DA SOLUÇÃO
     sol.adicionarAlocacao(enf, cand->getDia(), cand->getTurno(), cand->getHabilidade(), true);
@@ -399,24 +411,25 @@ void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<En
         semana.setDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValOpt);
 
         // REDUZ TOTAL DE ALOCAÇÕES DO ENFERMEIRO
-        enf->setTotalAloc(enf->getTotalAloc() + 1);
+        enfProg.setTotalAloc(enfProg.getTotalAloc() + 1);
     }
 
     // AJUSTA TURNOS CONTRA PREFERÊNCIA
     if (semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()))
     {
-        enf->setTotalTurnosContraPref(enf->getTotalTurnosContraPref() + 1);
+        enfProg.setTotalTurnosContraPref(enfProg.getTotalTurnosContraPref() + 1);
     }
 
     // AJUSTA FINAIS DE SEMANA
     if (cand->getDia() == "Sat" || cand->getDia() == "Sun")
     {
-        enf->setTotalAlocFimSemana(enf->getTotalAlocFimSemana() + 1);
+        enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() + 1);
     }
 }
 
 void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
 {
+    /*
 
     const auto &totalAlocacoes = sol->getTotalAlocacoes();
     // percorrer todos os candidatos
@@ -488,6 +501,7 @@ void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
             }
         }
     }
+        */
 }
 
 void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
@@ -507,7 +521,7 @@ bool Instancia::avaliaViabilidade(Solucao &sol)
     return viavel;
 }
 
-int Instancia::avaliaNota(vector<Solucao> &sol)
+int Instancia::avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso> &enfProgMap)
 {
     // demanda otima não cumprida (ver de cada semana)
     int demandaOtimaFalta = 0;
@@ -536,22 +550,23 @@ int Instancia::avaliaNota(vector<Solucao> &sol)
 
     for (int i = 0; i < enfermeiros.size(); i++)
     {
-        preferenciasFalta += enfermeiros[i]->getTotalTurnosContraPref();
-        fdsIncompleto += enfermeiros[i]->getTotalFdsIncompleto();
-        if (enfermeiros[i]->getTotalAloc() <= enfermeiros[i]->getContrato().getMinAlocacoes())
+        EnfermeiroProgresso &enfProg = enfProgMap[enfermeiros[i]->getCodigo()];
+        preferenciasFalta += enfProg.getTotalTurnosContraPref();
+        fdsIncompleto += enfProg.getTotalFdsIncompleto();
+        if (enfProg.getTotalAloc() <= enfermeiros[i]->getContrato().getMinAlocacoes())
         {
-            alocTotalFaltaMin += enfermeiros[i]->getContrato().getMinAlocacoes() - enfermeiros[i]->getTotalAloc();
+            alocTotalFaltaMin += enfermeiros[i]->getContrato().getMinAlocacoes() - enfProg.getTotalAloc();
         }
         else
         {
-            if (enfermeiros[i]->getTotalAloc() > enfermeiros[i]->getContrato().getMaxAlocacoes())
+            if (enfProg.getTotalAloc() > enfermeiros[i]->getContrato().getMaxAlocacoes())
             {
-                alocTotalAcimaMax += enfermeiros[i]->getTotalAloc() - enfermeiros[i]->getContrato().getMaxAlocacoes();
+                alocTotalAcimaMax += enfProg.getTotalAloc() - enfermeiros[i]->getContrato().getMaxAlocacoes();
             }
         }
-        if (enfermeiros[i]->getTotalAlocFimSemana() > enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana())
+        if (enfProg.getTotalAlocFimSemana() > enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana())
         {
-            fdsTotalAcimaMax += enfermeiros[i]->getTotalAlocFimSemana() - enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana();
+            fdsTotalAcimaMax += enfProg.getTotalAlocFimSemana() - enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana();
         }
     }
 
@@ -565,7 +580,7 @@ int Instancia::avaliaNota(vector<Solucao> &sol)
     return penalidade;
 }
 
-void Instancia::registraSolucao(vector<Solucao> &solucoes, string codigoInstancia, int numeroIteracao)
+void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao)
 {
     ofstream outputFile;
     outputFile.open("saidaGulosoRand.txt", ios::app);
@@ -620,22 +635,23 @@ void Instancia::registraSolucao(vector<Solucao> &solucoes, string codigoInstanci
 
     for (int i = 0; i < enfermeiros.size(); i++)
     {
-        preferenciasFalta += enfermeiros[i]->getTotalTurnosContraPref();
-        fdsIncompleto += enfermeiros[i]->getTotalFdsIncompleto();
-        if (enfermeiros[i]->getTotalAloc() <= enfermeiros[i]->getContrato().getMinAlocacoes())
+        EnfermeiroProgresso &enfProg = enfProgMap[enfermeiros[i]->getCodigo()];
+        preferenciasFalta += enfProg.getTotalTurnosContraPref();
+        fdsIncompleto += enfProg.getTotalFdsIncompleto();
+        if (enfProg.getTotalAloc() <= enfermeiros[i]->getContrato().getMinAlocacoes())
         {
-            alocTotalFaltaMin += enfermeiros[i]->getContrato().getMinAlocacoes() - enfermeiros[i]->getTotalAloc();
+            alocTotalFaltaMin += enfermeiros[i]->getContrato().getMinAlocacoes() - enfProg.getTotalAloc();
         }
         else
         {
-            if (enfermeiros[i]->getTotalAloc() > enfermeiros[i]->getContrato().getMaxAlocacoes())
+            if (enfProg.getTotalAloc() > enfermeiros[i]->getContrato().getMaxAlocacoes())
             {
-                alocTotalAcimaMax += enfermeiros[i]->getTotalAloc() - enfermeiros[i]->getContrato().getMaxAlocacoes();
+                alocTotalAcimaMax += enfProg.getTotalAloc() - enfermeiros[i]->getContrato().getMaxAlocacoes();
             }
         }
-        if (enfermeiros[i]->getTotalAlocFimSemana() > enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana())
+        if (enfProg.getTotalAlocFimSemana() > enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana())
         {
-            fdsTotalAcimaMax += enfermeiros[i]->getTotalAlocFimSemana() - enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana();
+            fdsTotalAcimaMax += enfProg.getTotalAlocFimSemana() - enfermeiros[i]->getContrato().getMaxAlocacoesFimSemana();
         }
     }
 
@@ -666,7 +682,7 @@ unique_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
         cout << endl
              << "--------SEMANA " << semanaAtual << ": ---------" << endl;
         setSemanaAtual(i);
-        unique_ptr<Solucao> sol = gulosoSemana(alfa);
+        unique_ptr<Solucao> sol = gulosoSemana(alfa, solCompleta->getEnfProg());
         sol->exibirAlocacoes();
         // TENHO QUE PASSAR A AVALIÇÃO PRA FORA E AVALIAR VIABILIDADE FORA TBM
         solCompleta->adicionaSolucaoSemana(*sol);
@@ -678,12 +694,13 @@ unique_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
     {
         viavel = viavel && solucoesSemanas[j].avaliaViabilidade();
     }
-    cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << avaliaNota(solucoesSemanas) << endl;
-    registraSolucao(solucoesSemanas, "n005w4", 1);
+    cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << avaliaNota(solucoesSemanas, solCompleta->getEnfProg()) << endl;
+    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 1);
+    // solCompleta->imprimirProgressoEnfermeiros();
     return solCompleta;
 }
 
-unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
+unique_ptr<Solucao> Instancia::gulosoSemana(int alfa, map<string, EnfermeiroProgresso> &enfProgresso)
 {
     // criar a solução
 
@@ -693,7 +710,7 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
     // ordena enfermeiros por: alocacoesFaltaProMin (acho que as sequenciais não fazem sentido aqui, e sim na escolha dos dias)
     // isso fica numa funcao ordenaVetorEnfermeiros()
 
-    ordenaEnfermeiros();
+    ordenaEnfermeiros(enfProgresso);
 
     // percorre vetor ordenado, e pra cada enfermeiro:
 
@@ -733,7 +750,7 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
         for (int cand = 0; cand < candidatos.size(); cand++)
         {
             unique_ptr<Candidato> &candPtr = candidatos[cand];
-            calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
+            calculaValorCand(candPtr, enfermeiros[i], enfProgresso[enfermeiros[i]->getCodigo()], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
         }
 
         // função ordenaVetorCand() ordena com base na nota
@@ -760,13 +777,13 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa)
             // sorteia um número aleatório entre 0 e alfa
 
             // aloca primeiro candidato
-            alocaCandidato(candidatos[indiceSelecionado], enfermeiros[i], solucao->getSemanaDemandas(), *solucao, candidatos, mapBooleans);
+            alocaCandidato(candidatos[indiceSelecionado], enfermeiros[i], enfProgresso[enfermeiros[i]->getCodigo()], solucao->getSemanaDemandas(), *solucao, candidatos, mapBooleans);
             // refaz a nota do resto
             // reordena vetor
             for (int cand = 0; cand < candidatos.size(); cand++)
             {
                 unique_ptr<Candidato> &candPtr = candidatos[cand];
-                calculaValorCand(candPtr, enfermeiros[i], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
+                calculaValorCand(candPtr, enfermeiros[i], enfProgresso[enfermeiros[i]->getCodigo()], mapBooleans[candPtr->getDia()][candPtr->getTurno()][candPtr->getHabilidade()], solucao->getSemanaDemandas(), *solucao);
             }
             ordenaVetorCand(candidatos);
         }

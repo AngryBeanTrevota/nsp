@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include "Solucao.h"
 #include "EnfermeiroProgresso.h"
 #include "Enfermeiro.h"
@@ -13,7 +14,7 @@ class SolucaoCompleta
 {
 public:
     vector<Solucao> solucoesSemana;
-    vector<EnfermeiroProgresso> enfProg;
+    map<string, EnfermeiroProgresso> enfProg;
 
     // Construtor que recebe vector<Enfermeiro>& e inicializa o vetor enfProg
     SolucaoCompleta(vector<shared_ptr<Enfermeiro>> &enfermeiros);
@@ -26,9 +27,10 @@ public:
     void setSolucoesSemana(vector<Solucao> solucoes);
 
     // Getters e Setters para enfProg
-    const vector<EnfermeiroProgresso> &getEnfProg() const;
-    vector<EnfermeiroProgresso> &getEnfProg();
-    void setEnfProg(const vector<EnfermeiroProgresso> &enfermeiroProgs);
+    map<string, EnfermeiroProgresso> &getEnfProg();
+    void setEnfProg(const map<string, EnfermeiroProgresso> &enfermeiroProgs);
+
+    void imprimirProgressoEnfermeiros() const;
 };
 
 #endif // SOLUCAOCOMPLETA_H
