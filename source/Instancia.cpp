@@ -365,143 +365,312 @@ void Instancia::alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enf
     // FUNCIONA ATÉ AQUI ---------------------------------------------------------------------------------------
 }
 
-void Instancia::desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol)
+void Instancia::mudaTurno(Solucao &solSemana, Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, string turnoNovo, string dia, string turnoAntigo, string habilidade)
 {
-    // REMOVE A ALOCAÇÃO DA SOLUÇÃO
-    sol.adicionarAlocacao(enf, cand->getDia(), cand->getTurno(), cand->getHabilidade(), false);
 
-    // AJUSTA DEMANDA (RESTAURA)
-    if (cand->getTurno() != "None")
+    if (turnoAntigo == turnoNovo) // não muda nada
     {
-        int novoValMin = semana.getDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) + 1;
-        semana.setDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValMin);
-
-        int novoValOpt = semana.getDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) + 1;
-        semana.setDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValOpt);
-
-        // REDUZ TOTAL DE ALOCAÇÕES DO ENFERMEIRO
-        enfProg.setTotalAloc(enfProg.getTotalAloc() - 1);
+        return;
     }
 
-    // AJUSTA TURNOS CONTRA PREFERÊNCIA
-    if (semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()))
+    std::cout << "problema no mudaTurno" << endl;
+
+    if (turnoAntigo != "None")
     {
-        enfProg.setTotalTurnosContraPref(enfProg.getTotalTurnosContraPref() - 1);
+        if (!solSemana.getTotalAlocacoes().at(enf).at(dia).at(turnoAntigo).at(habilidade))
+        {
+            std::cout << endl
+                      << "Não estava alocado antes" << endl;
+            return;
+        }
     }
 
-    // AJUSTA FINAIS DE SEMANA
-    if (cand->getDia() == "Sat" || cand->getDia() == "Sun")
-    {
-        enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() - 1);
-    }
-}
-
-void Instancia::alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol)
-{
-    // ADICIONA A ALOCAÇÃO DA SOLUÇÃO
-    sol.adicionarAlocacao(enf, cand->getDia(), cand->getTurno(), cand->getHabilidade(), true);
-
-    // AJUSTA DEMANDA
-    if (cand->getTurno() != "None")
-    {
-        int novoValMin = semana.getDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) - 1;
-        semana.setDemandaMinima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValMin);
-
-        int novoValOpt = semana.getDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade()) - 1;
-        semana.setDemandaOtima(cand->getDia(), cand->getTurno(), cand->getHabilidade(), novoValOpt);
-
-        // REDUZ TOTAL DE ALOCAÇÕES DO ENFERMEIRO
-        enfProg.setTotalAloc(enfProg.getTotalAloc() + 1);
-    }
-
-    // AJUSTA TURNOS CONTRA PREFERÊNCIA
-    if (semana.prefereFolgaTurno(enf->getCodigo(), cand->getDia(), cand->getTurno()))
-    {
-        enfProg.setTotalTurnosContraPref(enfProg.getTotalTurnosContraPref() + 1);
-    }
-
-    // AJUSTA FINAIS DE SEMANA
-    if (cand->getDia() == "Sat" || cand->getDia() == "Sun")
-    {
-        enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() + 1);
-    }
-}
-
-void Instancia::buscaLocal(unique_ptr<Solucao> &sol)
-{
     /*
 
-    const auto &totalAlocacoes = sol->getTotalAlocacoes();
-    // percorrer todos os candidatos
-    for (const auto &enfermeiro : totalAlocacoes)
+    cout << endl
+         << endl
+         << "MUDANDO O TURNO: " << enf->getCodigo() << " (" << dia << ", " << turnoAntigo << ", " << habilidade << ") para " << " (" << dia << ", " << turnoNovo << ", " << habilidade << ")" << endl
+         << endl;
+    cout << endl
+         << endl
+         << "ANTES:" << endl
+         << endl;
+    solSemana.exibirAlocacoes();
+
+    */
+
+    // atualiza o map de alocacoes
+
+    if (turnoAntigo == "None" && turnoNovo != "None")
     {
-        const string &nomeEnfermeiro = enfermeiro.first->getCodigo();
-        for (const auto &dia : enfermeiro.second)
+        solSemana.adicionarAlocacao(enf, dia, turnoNovo, habilidade, true);
+    }
+    else
+    {
+        if (turnoNovo == "None" && turnoAntigo != "None")
         {
-            const string &nomeDia = dia.first;
-            for (const auto &turno : dia.second)
+            solSemana.adicionarAlocacao(enf, dia, turnoAntigo, habilidade, false);
+        }
+        else
+        {
+            solSemana.adicionarAlocacao(enf, dia, turnoNovo, habilidade, true);
+            solSemana.adicionarAlocacao(enf, dia, turnoAntigo, habilidade, false);
+        }
+    }
+
+    if (turnoNovo == "None")
+    {
+        // não trabalha no dia/desaloca
+        // demanda
+
+        solSemana.decrementaDemandaSuprida(dia, turnoAntigo, habilidade, 1);
+
+        // enfermeiro
+
+        enfProg.setTotalAloc(enfProg.getTotalAloc() - 1);
+        if (turnoAntigo == "Sat" || turnoAntigo == "Sun")
+        {
+            enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() - 1);
+        }
+    }
+    else
+    {
+        if (turnoAntigo == "None")
+        {
+            // passa a trabalhar no dia/aloca
+            // demanda
+
+            solSemana.incrementaDemandaSuprida(dia, turnoNovo, habilidade, 1);
+
+            // enfermeiro
+
+            enfProg.setTotalAloc(enfProg.getTotalAloc() + 1);
+            if (turnoNovo == "Sat" || turnoNovo == "Sun")
             {
-                const string &nomeTurno = turno.first;
-                for (const auto &hab : turno.second)
+                enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() + 1);
+            }
+        }
+        else
+        {
+            // só muda de turno
+            // demanda
+
+            solSemana.decrementaDemandaSuprida(dia, turnoAntigo, habilidade, 1);
+            solSemana.incrementaDemandaSuprida(dia, turnoNovo, habilidade, 1);
+
+            // enfermeiro
+
+            if ((turnoNovo == "Sat" || turnoNovo == "Sun") && (turnoAntigo != "Sat" && turnoAntigo != "Sun"))
+            {
+                enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() + 1);
+            }
+            if ((turnoAntigo == "Sat" || turnoAntigo == "Sun") && (turnoNovo != "Sat" && turnoNovo != "Sun"))
+            {
+                enfProg.setTotalAlocFimSemana(enfProg.getTotalAlocFimSemana() - 1);
+            }
+        }
+    }
+
+    /*
+
+    cout << endl
+         << endl
+         << "DEPOIS:" << endl
+         << endl;
+    solSemana.exibirAlocacoes();
+
+    */
+}
+
+int Instancia::mudaCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, SolucaoCompleta &sol, Solucao &solSemana, string dia, string habilidade, string turnoNovo)
+{
+
+    // verifica qual era o turno antigo
+
+    string turnoAntigo = "None";
+    for (int turno = 0; turno < tipoTurnos.size(); turno++)
+    {
+        if (solSemana.getTotalAlocacoes().at(enf).at(dia).at(tipoTurnos[turno]).at(habilidade))
+        {
+            turnoAntigo = tipoTurnos[turno];
+            cout << endl
+                 << turnoAntigo << endl;
+        }
+    }
+
+    // salva valores de antes
+
+    int grauInviabilidadeAntes = solSemana.grauViabilidadeTurno(dia, turnoAntigo, habilidade) + solSemana.grauViabilidadeTurno(dia, turnoNovo, habilidade);
+    int demandasOptFaltandoAntes = solSemana.demandasOtimasFaltandoTurno(dia, turnoNovo, habilidade) + solSemana.demandasOtimasFaltandoTurno(dia, turnoAntigo, habilidade);
+    int alocTotalAntes = enfProg.getTotalAloc();
+    int alocFdsAntes = enfProg.getTotalAlocFimSemana();
+
+    // faz mudanca
+
+    mudaTurno(solSemana, semanaInstancia, enfProg, enf, turnoNovo, dia, turnoAntigo, habilidade);
+
+    // calcula com valores depois
+
+    int mudancaDemandaMin = solSemana.grauViabilidadeTurno(dia, turnoAntigo, habilidade) + solSemana.grauViabilidadeTurno(dia, turnoNovo, habilidade) - grauInviabilidadeAntes;
+    int mudancaDemandaOpt = solSemana.demandasOtimasFaltandoTurno(dia, turnoNovo, habilidade) + solSemana.demandasOtimasFaltandoTurno(dia, turnoAntigo, habilidade) - demandasOptFaltandoAntes;
+    int mudancaAlocTotal = enfProg.getTotalAloc() - alocTotalAntes;
+    int mudancaAlocFds = enfProg.getTotalAlocFimSemana() - alocFdsAntes;
+
+    // retorna resultado
+
+    sol.setGrauInviabilidade(sol.getGrauInviabilidade() + mudancaDemandaMin);
+    sol.setPenalidade(sol.getPenalidade() + mudancaDemandaOpt + mudancaAlocTotal + mudancaAlocFds);
+    return sol.getPenalidade();
+}
+
+void Instancia::mudaHabilidade(Solucao &solSemana, Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, string turno, string dia, string habilidadeNova, string habilidadeAntiga)
+{
+    if (habilidadeAntiga == habilidadeNova) // não muda nada
+    {
+        return;
+    }
+
+    if (habilidadeAntiga != "None")
+    {
+        if (!solSemana.getTotalAlocacoes().at(enf).at(dia).at(turno).at(habilidadeAntiga))
+        {
+            std::cout << endl
+                      << "Não estava alocado antes" << endl;
+            return;
+        }
+    }
+
+    if (!solSemana.getTotalAlocacoes().at(enf).at(dia).at(turno).at(habilidadeNova))
+    {
+        std::cout << endl
+                  << "Já está alocado" << endl;
+        return;
+    }
+
+    // atualiza o map de alocacoes
+
+    if (habilidadeAntiga == "None")
+    {
+        solSemana.adicionarAlocacao(enf, dia, turno, habilidadeNova, true);
+        solSemana.incrementaDemandaSuprida(dia, turno, habilidadeNova, 1);
+        enfProg.setTotalAloc(enfProg.getTotalAloc() + 1);
+        if (dia == "Sat" || dia == "Sun")
+        {
+            enfProg.setTotalAlocFimSemana(enfProg.getTotalFdsIncompleto() + 1);
+        }
+    }
+    else
+    {
+        solSemana.adicionarAlocacao(enf, dia, turno, habilidadeNova, true);
+        solSemana.adicionarAlocacao(enf, dia, turno, habilidadeAntiga, false);
+        solSemana.decrementaDemandaSuprida(dia, turno, habilidadeAntiga, 1);
+        solSemana.incrementaDemandaSuprida(dia, turno, habilidadeNova, 1);
+    }
+}
+
+int Instancia::mudaHabilidadeCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, SolucaoCompleta &sol, Solucao &solSemana, string dia, string turno, string habilidadeNova)
+{
+    if (turno == "None")
+    {
+        return 0;
+    }
+    // verifica qual era o turno antigo
+
+    string habilidadeAntiga = "None";
+    vector<string> habEnf = enf->getHabilidades();
+    for (int hab = 0; hab < habEnf.size(); hab++)
+    {
+        if (solSemana.getTotalAlocacoes().at(enf).at(dia).at(turno).at(habEnf[hab]))
+        {
+            habilidadeAntiga = habEnf[hab];
+        }
+    }
+
+    // salva valores de antes
+
+    int grauInviabilidadeAntes = solSemana.grauViabilidadeTurno(dia, turno, habilidadeAntiga) + solSemana.grauViabilidadeTurno(dia, turno, habilidadeNova);
+    int demandasOptFaltandoAntes = solSemana.demandasOtimasFaltandoTurno(dia, turno, habilidadeAntiga) + solSemana.demandasOtimasFaltandoTurno(dia, turno, habilidadeNova);
+    int alocTotalAntes = enfProg.getTotalAloc();
+    int alocFdsAntes = enfProg.getTotalAlocFimSemana();
+
+    // faz mudanca
+
+    mudaHabilidade(solSemana, semanaInstancia, enfProg, enf, turno, dia, habilidadeNova, habilidadeAntiga);
+
+    // calcula com valores depois
+
+    int mudancaDemandaMin = solSemana.grauViabilidadeTurno(dia, turno, habilidadeAntiga) + solSemana.grauViabilidadeTurno(dia, turno, habilidadeNova) - grauInviabilidadeAntes;
+    int mudancaDemandaOpt = solSemana.demandasOtimasFaltandoTurno(dia, turno, habilidadeAntiga) + solSemana.demandasOtimasFaltandoTurno(dia, turno, habilidadeNova) - demandasOptFaltandoAntes;
+    int mudancaAlocTotal = enfProg.getTotalAloc() - alocTotalAntes;
+    int mudancaAlocFds = enfProg.getTotalAlocFimSemana() - alocFdsAntes;
+
+    // retorna resultado
+
+    sol.setGrauInviabilidade(sol.getGrauInviabilidade() + mudancaDemandaMin);
+    sol.setPenalidade(sol.getPenalidade() + mudancaDemandaOpt + mudancaAlocTotal + mudancaAlocFds);
+    return sol.getPenalidade();
+}
+
+void Instancia::buscaLocal(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIter)
+{
+    // recebe SolucaoCompleta, numeroSemana e qtdIteracoes
+
+    // inicializa melhor solucao + contador + houveMudanca
+
+    bool houveMudanca = true;
+    int contador = 0;
+    SolucaoCompleta &melhorSolucao = *solCompleta;
+    SolucaoCompleta &solucaoAtual = *solCompleta;
+    vector<string> diasSemana = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    vector<string> turnosComNone(this->getTipoTurnos());
+    turnosComNone.push_back("None");
+
+    // while(tiver melhora)
+
+    while (houveMudanca && contador < limiteIter)
+    {
+        houveMudanca = false;
+
+        for (int enf = 0; enf < enfermeiros.size(); enf++) // for(todos os enfermeiros)
+        {
+            vector<string> enfHabilidades = enfermeiros[enf]->getHabilidades();
+            for (int dia = 0; dia < 7; dia++) // for(todos os dias)
+            {
+                for (int hab = 0; hab < enfHabilidades.size(); hab++)
                 {
-                    const string &habilidade = hab.first;
-                    bool alocacao = hab.second;
-
-                    if (alocacao)
+                    for (int turnos = 0; turnos < turnosComNone.size(); turnos++) // for(turnos)
                     {
-                        unique_ptr<Candidato> cand = make_unique<Candidato>(
-                            nomeDia, nomeTurno, habilidade,
-                            semanas[semanaAtual].getDemandaMinima(nomeDia, nomeTurno, habilidade),
-                            semanas[semanaAtual].getDemandaOtima(nomeDia, nomeTurno, habilidade), 0);
-                        // salvar o turno dele
+                        // SolucaoCompleta solucaoAtual = clone da solInicial
+                        SolucaoCompleta solucaoAtualClone = SolucaoCompleta(solucaoAtual);
 
-                        //
-                        // sol->setNota(avaliaNota(*sol, semanaAtual));
-                        // sol->exibirAlocacoes();
+                        // faz mudança
 
-                        string turnoCandOriginal = turno.first;
-                        // para cada candidato, testar todos os turnos que não são o alocado
-                        for (int outroTurno = 0; outroTurno < tipoTurnos.size(); outroTurno++)
+                        mudaCalculaNotaBuscaLocal(semanas[numSemana], solucaoAtualClone.getEnfProg()[enfermeiros[enf]->getCodigo()], enfermeiros[enf], solucaoAtualClone, solucaoAtualClone.getSolucoesSemana()[numSemana], diasSemana[dia], enfHabilidades[hab], turnosComNone[turnos]);
+                        //    reavalia penalidade (CONSIDER INVIABILIDADE!! fazer uma func penalidadeComInv)
+
+                        int penalidadeMelhorAtual = melhorSolucao.getGrauInviabilidade() * melhorSolucao.getPenalidade() + melhorSolucao.getPenalidade();
+                        int penalidadeNovaSolucao = solucaoAtualClone.getGrauInviabilidade() * solucaoAtualClone.getPenalidade() + solucaoAtualClone.getPenalidade();
+
+                        //      TENHO QUE MUDAR PRA NÃO COLOCAR MAIS ENFERMEIRO DEPOIS QUE CUMPRIU A ÓTIMA
+                        //      será que melhora??
+                        //      if(solucaoAtual.penalidade < melhorSol->penalidade)
+                        //          melhorSol = &solucaoAtual;
+                        //          houveMudanca = true;
+
+                        if (penalidadeNovaSolucao < penalidadeMelhorAtual)
                         {
-                            if (tipoTurnos[outroTurno] != turnoCandOriginal)
-                            {
-                                // salva valor da solucao original
-
-                                float penalidadeSolInicial = sol->getNota();
-
-                                // desaloca o atual, aloca o novo
-
-                                desalocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
-                                unique_ptr<Candidato> newCand = make_unique<Candidato>(
-                                    nomeDia, tipoTurnos[outroTurno], habilidade,
-                                    semanas[semanaAtual].getDemandaMinima(nomeDia, tipoTurnos[outroTurno], habilidade),
-                                    semanas[semanaAtual].getDemandaOtima(nomeDia, tipoTurnos[outroTurno], habilidade), 0);
-                                alocaBuscaLocal(newCand, enfermeiro.first, semanas[semanaAtual], *sol);
-
-                                // se melhorar (DIMINUIR A PENALIDADE), passa a solucao nova pra essa func de novo
-
-                                // sol->setNota(avaliaNota(*sol, semanaAtual));
-                                float penalidadeSolNova = sol->getNota();
-
-                                if (penalidadeSolInicial > penalidadeSolNova)
-                                {
-                                    buscaLocal(sol); // recomeça com essa nova solução
-                                }
-                                else
-                                {
-                                    // se não melhorar, desaloca o novo, volta o original e retorna a nota
-                                    desalocaBuscaLocal(newCand, enfermeiro.first, semanas[semanaAtual], *sol);
-                                    alocaBuscaLocal(cand, enfermeiro.first, semanas[semanaAtual], *sol);
-                                    // sol->setNota(avaliaNota(*sol, semanaAtual));
-                                }
-                            }
+                            melhorSolucao = solucaoAtualClone;
+                            houveMudanca = true;
                         }
                     }
                 }
             }
         }
+        solucaoAtual = melhorSolucao; // muda só depois de passar por tudo e dar uma chance pra todos
     }
-        */
+
+    // solucaoFinal = &melhorSol
+    *solCompleta = melhorSolucao;
 }
 
 void Instancia::ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos)
@@ -674,9 +843,9 @@ void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, Enfermeir
     outputFile.close();
 }
 
-unique_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
+shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
 {
-    unique_ptr<SolucaoCompleta> solCompleta = make_unique<SolucaoCompleta>(this->enfermeiros);
+    shared_ptr<SolucaoCompleta> solCompleta = make_unique<SolucaoCompleta>(this->enfermeiros);
     for (int i = 0; i < semanas.size(); i++)
     {
         cout << endl
@@ -689,14 +858,25 @@ unique_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
         semanaAtual++;
     }
     bool viavel = true;
+    int grauInviabilidadeSol = 0;
     vector<Solucao> &solucoesSemanas = solCompleta->getSolucoesSemana();
     for (int j = 0; j < solucoesSemanas.size(); j++)
     {
         viavel = viavel && solucoesSemanas[j].avaliaViabilidade();
+        grauInviabilidadeSol += solucoesSemanas[j].getGrauInviabilidade();
     }
-    cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << avaliaNota(solucoesSemanas, solCompleta->getEnfProg()) << endl;
+    solCompleta->setGrauInviabilidade(grauInviabilidadeSol);
+    int penalidadeSol = avaliaNota(solucoesSemanas, solCompleta->getEnfProg());
+    solCompleta->setPenalidade(penalidadeSol);
+    cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << penalidadeSol << endl;
     registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 1);
-    // solCompleta->imprimirProgressoEnfermeiros();
+
+    for (int numSemana = 0; numSemana < this->getSemanas().size(); numSemana++)
+    {
+        buscaLocal(solCompleta, numSemana, 100);
+    }
+    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 100);
+
     return solCompleta;
 }
 
@@ -706,6 +886,7 @@ unique_ptr<Solucao> Instancia::gulosoSemana(int alfa, map<string, EnfermeiroProg
 
     unique_ptr<Solucao> solucao = make_unique<Solucao>();
     solucao->setSemanaDemandas(semanas[semanaAtual]);
+    solucao->inicializaAlocacoes(enfermeiros, tipoTurnos, habilidadesInstancia);
 
     // ordena enfermeiros por: alocacoesFaltaProMin (acho que as sequenciais não fazem sentido aqui, e sim na escolha dos dias)
     // isso fica numa funcao ordenaVetorEnfermeiros()

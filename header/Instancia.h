@@ -82,13 +82,18 @@ public:
     void calculaValorCand(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, bool boolFds, const Semana &semana, Solucao &sol);
     void ordenaVetorCand(vector<unique_ptr<Candidato>> &candidatos);
     void alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans);
-    void desalocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol);
-    void alocaBuscaLocal(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol);
     bool avaliaViabilidade(Solucao &sol);
     int avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso> &enfProgMap);
     void registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao);
-    void buscaLocal(unique_ptr<Solucao> &sol);
-    unique_ptr<SolucaoCompleta> guloso(int alfa);
+    shared_ptr<SolucaoCompleta> guloso(int alfa);
+
+    // busca local
+
+    void mudaTurno(Solucao &solSemana, Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, string turnoNovo, string dia, string turnoAntigo, string habilidade);
+    int mudaCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, SolucaoCompleta &sol, Solucao &solSemana, string dia, string habilidade, string turnoNovo);
+    void buscaLocal(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIter);
+    void mudaHabilidade(Solucao &solSemana, Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, string turno, string dia, string habilidadeNova, string habilidadeAntiga);
+    int mudaHabilidadeCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, SolucaoCompleta &sol, Solucao &solSemana, string dia, string turno, string habilidadeNova);
 };
 
 #endif // INSTANCIA_H

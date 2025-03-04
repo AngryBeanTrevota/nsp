@@ -65,10 +65,14 @@ public:
     void decrementaDemandaSuprida(const string dia, const string turno, const string habilidade, int val);
     void imprimirDemandasSupridas() const;
 
-    // Avalia soluca
+    // Avalia solucao
 
     bool avaliaViabilidade();
+    int grauViabilidadeTurno(string dia, string turno, string habilidade);
     int somaDemandasOtimasFaltando();
+    int demandasOtimasFaltandoTurno(string dia, string turno, string habilidade);
+
+    void inicializaAlocacoes(vector<shared_ptr<Enfermeiro>> enfermeiros, vector<string> turnos, vector<string> habilidades);
 };
 
 #endif // SOLUCAO_H

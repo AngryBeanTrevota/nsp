@@ -4,6 +4,8 @@ using namespace std;
 
 SolucaoCompleta::SolucaoCompleta(vector<shared_ptr<Enfermeiro>> &enfermeiros)
 {
+    penalidade = 0;
+    grauInviabilidade = 0;
 
     // Para cada enfermeiro, cria um objeto EnfermeiroProgresso com o código obtido e adiciona ao vetor enfProg
     for (auto &enfermeiro : enfermeiros)
@@ -43,6 +45,24 @@ map<string, EnfermeiroProgresso> &SolucaoCompleta::getEnfProg()
 void SolucaoCompleta::setEnfProg(const map<string, EnfermeiroProgresso> &enfermeiroProgs)
 {
     enfProg = enfermeiroProgs;
+}
+
+int SolucaoCompleta::getPenalidade() const
+{
+    return penalidade;
+}
+void SolucaoCompleta::setPenalidade(int p)
+{
+    this->penalidade = p;
+}
+
+int SolucaoCompleta::getGrauInviabilidade() const
+{
+    return grauInviabilidade;
+}
+void SolucaoCompleta::setGrauInviabilidade(int g)
+{
+    this->grauInviabilidade = g;
 }
 
 void SolucaoCompleta::imprimirProgressoEnfermeiros() const

@@ -213,3 +213,55 @@ int Solucao::somaDemandasOtimasFaltando()
 
     return contador;
 }
+
+void Solucao::inicializaAlocacoes(vector<shared_ptr<Enfermeiro>> enfermeiros, vector<string> turnos, vector<string> habilidades)
+{
+    vector<string> diasSemana = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    for (int i = 0; i < enfermeiros.size(); i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            for (int k = 0; k < turnos.size(); k++)
+            {
+                for (int l = 0; l < habilidades.size(); l++)
+                {
+                    totalAlocacoes[enfermeiros[i]][diasSemana[j]][turnos[k]][habilidades[l]] = false;
+                }
+            }
+        }
+    }
+}
+
+int Solucao::grauViabilidadeTurno(string dia, string turno, string habilidade)
+{
+    if (turno == "None" || habilidade == "None")
+    {
+        return 0;
+    }
+    int grauInviabilidade = semanaDemandas.getDemandaMinima(dia, turno, habilidade) - demandasSupridas[dia][turno][habilidade];
+    if (grauInviabilidade > 0)
+    {
+        return grauInviabilidade;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int Solucao::demandasOtimasFaltandoTurno(string dia, string turno, string habilidade)
+{
+    if (turno == "None" || habilidade == "None")
+    {
+        return 0;
+    }
+    int demandaOtimaFaltando = semanaDemandas.getDemandaOtima(dia, turno, habilidade) - demandasSupridas[dia][turno][habilidade];
+    if (demandaOtimaFaltando > 0)
+    {
+        return demandaOtimaFaltando;
+    }
+    else
+    {
+        return 0;
+    }
+}

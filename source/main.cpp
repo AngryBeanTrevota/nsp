@@ -278,13 +278,13 @@ unique_ptr<Semana> leArquivoSemana(string caminhoArquivo)
 
 unique_ptr<Instancia> leInstanciaSemanasPeloCodigo(string codigo)
 {
-    string instanciaCaminho = "testdatasets_txt/" + codigo + "/Sc-" + codigo + ".txt";
+    string instanciaCaminho = "datasets/" + codigo + "/Sc-" + codigo + ".txt";
     unique_ptr<Instancia> instancia = leitorArquivo(instanciaCaminho);
     int qtdSemanas = instancia->getTotalSemanas();
     {
         for (int i = 0; i < qtdSemanas; i++)
         {
-            string semanaCaminho = "testdatasets_txt/" + codigo + "/WD-" + codigo + "-" + to_string(i) + ".txt";
+            string semanaCaminho = "datasets/" + codigo + "/WD-" + codigo + "-" + to_string(i) + ".txt";
             unique_ptr<Semana> semana = leArquivoSemana(semanaCaminho);
             instancia->adicionarSemana(*semana);
         }
@@ -292,15 +292,22 @@ unique_ptr<Instancia> leInstanciaSemanasPeloCodigo(string codigo)
     return instancia;
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    string arg1 = "nao foi";
+    if (argc >= 1)
+    {
+        arg1 = argv[1];
+    }
+
     // seed pra randomizar coisas
 
     int x = time(0);
     srand(x);
 
     // unique_ptr<Instancia> instancia = leitorArquivo("testdatasets_txt/n005w4/Sc-n005w4.txt");
-    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo("n005w4");
+
+    unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo(arg1);
     if (instancia)
     {
         instancia->guloso(2);
