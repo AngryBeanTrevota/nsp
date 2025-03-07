@@ -84,8 +84,8 @@ public:
     void alocaCandidato(const unique_ptr<Candidato> &cand, shared_ptr<Enfermeiro> enf, EnfermeiroProgresso &enfProg, Semana &semana, Solucao &sol, vector<unique_ptr<Candidato>> &candidatos, map<string, map<string, map<string, bool>>> &mapBooleans);
     bool avaliaViabilidade(Solucao &sol);
     int avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso> &enfProgMap);
-    void registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao);
-    shared_ptr<SolucaoCompleta> guloso(int alfa);
+    void registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao, int duracaoMilissegundos);
+    shared_ptr<SolucaoCompleta> guloso(int alfa, string instancia, int iteracao);
 
     // busca local
 
@@ -94,6 +94,10 @@ public:
     void buscaLocal(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIter);
     void mudaHabilidade(Solucao &solSemana, Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, string turno, string dia, string habilidadeNova, string habilidadeAntiga);
     int mudaHabilidadeCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProgresso &enfProg, shared_ptr<Enfermeiro> enf, SolucaoCompleta &sol, Solucao &solSemana, string dia, string turno, string habilidadeNova);
+
+    // ils
+
+    void perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSemana);
 };
 
 #endif // INSTANCIA_H

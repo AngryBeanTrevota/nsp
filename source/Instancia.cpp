@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 // Construtor
 Instancia::Instancia()
@@ -193,17 +194,17 @@ void Instancia::ordenaEnfermeiros(map<string, EnfermeiroProgresso> &enfProgresso
     sort(enfermeiros.begin(), enfermeiros.end(),
          [&enfProgresso](shared_ptr<Enfermeiro> a, shared_ptr<Enfermeiro> b)
          {
-             int progressoA = enfProgresso[a->getCodigo()].getTotalAloc();
-             int progressoB = enfProgresso[b->getCodigo()].getTotalAloc();
+             /*
+ int progressoA = enfProgresso[a->getCodigo()].getTotalAloc();
+ int progressoB = enfProgresso[b->getCodigo()].getTotalAloc();
+ return (a->getContrato().getMinAlocacoes() - progressoA) >
+        (b->getContrato().getMinAlocacoes() - progressoB);
+
+ // Ordenando por mais flexível por ultimo(maior diferença primeiro)
+              */
 
              int flexibilidadeA = a->getHabilidades().size();
              int flexibilidadeB = b->getHabilidades().size();
-
-             // Ordenando de forma decrescente (maior diferença primeiro)
-             /*
-             return (a->getContrato().getMinAlocacoes() - progressoA) >
-                    (b->getContrato().getMinAlocacoes() - progressoB);
-            */
 
              return (flexibilidadeA < flexibilidadeB);
          });
@@ -749,23 +750,16 @@ int Instancia::avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso>
     return penalidade;
 }
 
-void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao)
+void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao, int duracaoMilissegundos)
 {
     ofstream outputFile;
-    outputFile.open("saidaGulosoRand.txt", ios::app);
-
-    cout << "BBBBBBB" << endl;
+    outputFile.open("resultadosTestes/gulosoRandReordem/" + codigoInstancia + ".txt", ios::app);
 
     if (!outputFile.is_open())
     {
         cerr << "Erro ao abrir output.txt" << endl;
         return;
     }
-
-    cout << endl
-         << endl
-         << "depois erro, ou seja, abriu" << endl
-         << endl;
 
     outputFile << "-------Instância " << codigoInstancia << " iteração " << numeroIteracao << "-------\n\n";
 
@@ -838,13 +832,153 @@ void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, Enfermeir
     outputFile << "viável: " << ((grauInviabilidade == 0) ? "sim" : "não") << "\n";
     outputFile << "grau de inviabilidade: " << grauInviabilidade << "\n";
     outputFile << "penalidade: " << penalidade << "\n\n";
+    outputFile << "tempo total: " << duracaoMilissegundos << "ms\n\n";
     outputFile << "-------------------------------------------\n\n";
 
     outputFile.close();
 }
 
-shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
+void Instancia::perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSemana)
 {
+    vector<string> tipoTurnosComNone(tipoTurnos);
+    tipoTurnosComNone.push_back("None");
+    setTipoTurnos(tipoTurnosComNone);
+
+    // sorteia os dias a serem trocados
+
+    string dia1 = getDiaSemana(random(0, 6));
+    string dia2 = dia1;
+    while (dia1 == dia2)
+    {
+        dia2 = getDiaSemana(random(0, 6));
+    }
+
+    cout << "Dias do swap: " << dia1 << "/ " << dia2 << endl;
+
+    Solucao &solucaoSemana = solCompleta->getSolucoesSemana()[numSemana];
+
+    // pega os valores antes da mudança
+
+    // inicializa os de demandaMin e demandaOpt
+
+    int demandaMinDepois = 0;
+    int demandaOptDepois = 0;
+
+    // totalAlocFds
+
+    int totalAlocFdsAntes = 0;
+    int totalAlocFdsDepois = 0;
+
+    int demandaMinAntes = 0;
+    int demandaOptAntes = 0;
+
+    for (int enf = 0; enf < enfermeiros.size(); enf++)
+    {
+        // pega o total aloc do fds antes de cada enfermeiro
+        totalAlocFdsAntes += solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana();
+        for (int turno = 0; turno < tipoTurnos.size(); turno++)
+        {
+
+            vector<string> enfHabilidades(enfermeiros[enf]->getHabilidades());
+            enfHabilidades.push_back("None");
+            for (int hab = 0; hab < enfHabilidades.size(); hab++)
+            {
+                // pega demanda minima e ótima antes
+
+                demandaMinAntes += (solucaoSemana.grauViabilidadeTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.grauViabilidadeTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
+                demandaOptAntes += (solucaoSemana.demandasOtimasFaltandoTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.demandasOtimasFaltandoTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
+            }
+        }
+    }
+
+    // realização do swap
+
+    // atualiza demandas
+
+    for (int turno = 0; turno < tipoTurnos.size(); turno++)
+    {
+        for (int hab = 0; hab < habilidadesInstancia.size(); hab++)
+        {
+            // atualiza demanda suprida
+            int demandaSupridaDia1 = solucaoSemana.getDemandaSupridaEspecifica(dia1, tipoTurnos[turno], habilidadesInstancia[hab]);
+            int demandaSupridaDia2 = solucaoSemana.getDemandaSupridaEspecifica(dia2, tipoTurnos[turno], habilidadesInstancia[hab]);
+            solucaoSemana.adicionarDemandaSuprida(dia1, tipoTurnos[turno], habilidadesInstancia[hab], demandaSupridaDia2);
+            solucaoSemana.adicionarDemandaSuprida(dia2, tipoTurnos[turno], habilidadesInstancia[hab], demandaSupridaDia1);
+        }
+    }
+
+    for (int enf = 0; enf < enfermeiros.size(); enf++)
+    {
+        vector<string> enfHabilidades = enfermeiros[enf]->getHabilidades();
+        enfHabilidades.push_back("None");
+        for (int turno = 0; turno < tipoTurnos.size(); turno++)
+        {
+            for (int hab = 0; hab < enfHabilidades.size(); hab++)
+            {
+
+                // atualiza alocacoes
+                bool alocDia1 = solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia1, tipoTurnos[turno], enfHabilidades[hab]);
+                bool alocDia2 = solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia2, tipoTurnos[turno], enfHabilidades[hab]);
+                solucaoSemana.adicionarAlocacao(enfermeiros[enf], dia1, tipoTurnos[turno], enfHabilidades[hab], alocDia2);
+                solucaoSemana.adicionarAlocacao(enfermeiros[enf], dia2, tipoTurnos[turno], enfHabilidades[hab], alocDia1);
+
+                // se o turno era alocado e agora nao é, remove um
+
+                if ((dia1 == "Sat" || dia1 == "Sun") && (alocDia2 == false) && (solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia1, tipoTurnos[turno], enfHabilidades[hab])))
+                {
+                    solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].setTotalAlocFimSemana(solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana() - 1);
+                }
+                if ((dia2 == "Sat" || dia2 == "Sun") && (alocDia1 == false) && (solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia2, tipoTurnos[turno], enfHabilidades[hab])))
+                {
+                    solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].setTotalAlocFimSemana(solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana() - 1);
+                }
+
+                // se o turno NAO era alocado e agora É, adiciona 1
+                if ((dia1 == "Sat" || dia1 == "Sun") && (alocDia2 == true) && (!solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia1, tipoTurnos[turno], enfHabilidades[hab])))
+                {
+                    solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].setTotalAlocFimSemana(solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana() + 1);
+                }
+                if ((dia2 == "Sat" || dia2 == "Sun") && (alocDia1 == true) && (!solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia2, tipoTurnos[turno], enfHabilidades[hab])))
+                {
+                    solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].setTotalAlocFimSemana(solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana() + 1);
+                }
+            }
+        }
+    }
+
+    // pega valores DEPOIS
+
+    for (int enf = 0; enf < enfermeiros.size(); enf++)
+    {
+        // pega o total aloc do fds Depois de cada enfermeiro
+        totalAlocFdsDepois += solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana();
+        for (int turno = 0; turno < tipoTurnos.size(); turno++)
+        {
+            vector<string> enfHabilidades = enfermeiros[enf]->getHabilidades();
+            enfHabilidades.push_back("None");
+            for (int hab = 0; hab < enfHabilidades.size(); hab++)
+            {
+                // pega demanda minima e ótima Depois
+
+                demandaMinDepois += (solucaoSemana.grauViabilidadeTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.grauViabilidadeTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
+                demandaOptDepois += (solucaoSemana.demandasOtimasFaltandoTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.demandasOtimasFaltandoTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
+            }
+        }
+    }
+
+    int mudancaPenalidade = (totalAlocFdsAntes - totalAlocFdsDepois) + (demandaOptAntes - demandaOptDepois);
+    int mudancaGrauInv = (demandaMinAntes - demandaMinDepois);
+    solCompleta->setPenalidade(solCompleta->getPenalidade() + mudancaPenalidade);
+    solCompleta->setGrauInviabilidade(solCompleta->getGrauInviabilidade() + mudancaGrauInv);
+    // reavaliar qualidade dentro do loop
+}
+
+shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa, string instancia, int iteracao)
+{
+    // começa a medir o tempo
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     shared_ptr<SolucaoCompleta> solCompleta = make_unique<SolucaoCompleta>(this->enfermeiros);
     for (int i = 0; i < semanas.size(); i++)
     {
@@ -869,13 +1003,29 @@ shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa)
     int penalidadeSol = avaliaNota(solucoesSemanas, solCompleta->getEnfProg());
     solCompleta->setPenalidade(penalidadeSol);
     cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << penalidadeSol << endl;
-    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 1);
 
+    /*
     for (int numSemana = 0; numSemana < this->getSemanas().size(); numSemana++)
     {
         buscaLocal(solCompleta, numSemana, 100);
     }
-    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 100);
+
+    */
+
+    solCompleta->getSolucoesSemana()[0].exibirAlocacoes();
+    perturbacao(solCompleta, 0);
+    cout << endl
+         << endl
+         << "DEPOIS" << endl;
+    solCompleta->getSolucoesSemana()[0].exibirAlocacoes();
+    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 100, 0);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    int duracaMilissegundos = duration.count();
+
+    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), instancia, iteracao, duracaMilissegundos);
 
     return solCompleta;
 }

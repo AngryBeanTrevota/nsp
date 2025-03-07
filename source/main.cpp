@@ -295,9 +295,11 @@ unique_ptr<Instancia> leInstanciaSemanasPeloCodigo(string codigo)
 int main(int argc, char **argv)
 {
     string arg1 = "nao foi";
+    int iteracao;
     if (argc >= 1)
     {
         arg1 = argv[1];
+        iteracao = stoi(argv[2]);
     }
 
     // seed pra randomizar coisas
@@ -310,7 +312,7 @@ int main(int argc, char **argv)
     unique_ptr<Instancia> instancia = leInstanciaSemanasPeloCodigo(arg1);
     if (instancia)
     {
-        instancia->guloso(2);
+        instancia->guloso(2, arg1, iteracao);
     }
     else
     {

@@ -265,3 +265,14 @@ int Solucao::demandasOtimasFaltandoTurno(string dia, string turno, string habili
         return 0;
     }
 }
+
+bool Solucao::getAlocacaoEspecifica(shared_ptr<Enfermeiro> enf, string dia, string turno, string habilidade)
+{
+    // nomeEnf -> dia -> turno -> hab -> true/false
+    return totalAlocacoes[enf][dia][turno][habilidade];
+}
+
+bool Solucao::getDemandaSupridaEspecifica(string dia, string turno, string habilidade)
+{
+    return demandasSupridas[dia][turno][habilidade];
+}

@@ -1,0 +1,2250 @@
+-------Instância n060w8 iteração 1-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 14
+semana 2: 13
+semana 3: 5
+semana 4: 3
+semana 5: 23
+semana 6: 22
+semana 7: 36
+semana 8: 41
+-geral:
+
+demandaOtimaFalta: 157
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1159
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2072
+
+tempo total: 40715ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 2-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 13
+semana 3: 4
+semana 4: 4
+semana 5: 21
+semana 6: 28
+semana 7: 31
+semana 8: 41
+-geral:
+
+demandaOtimaFalta: 159
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1124
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2039
+
+tempo total: 41564ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 3-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 18
+semana 2: 14
+semana 3: 1
+semana 4: 3
+semana 5: 19
+semana 6: 22
+semana 7: 33
+semana 8: 41
+-geral:
+
+demandaOtimaFalta: 151
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1149
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2056
+
+tempo total: 41400ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 4-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 23)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 14
+semana 2: 11
+semana 3: 2
+semana 4: 4
+semana 5: 25
+semana 6: 26
+semana 7: 35
+semana 8: 39
+-geral:
+
+demandaOtimaFalta: 156
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1136
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2048
+
+tempo total: 41241ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 5-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 10
+semana 3: 4
+semana 4: 3
+semana 5: 20
+semana 6: 23
+semana 7: 31
+semana 8: 40
+-geral:
+
+demandaOtimaFalta: 148
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1140
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 48
+penalidade: 2044
+
+tempo total: 40839ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 6-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 22)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 10
+semana 3: 3
+semana 4: 3
+semana 5: 19
+semana 6: 30
+semana 7: 35
+semana 8: 37
+-geral:
+
+demandaOtimaFalta: 152
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1134
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2042
+
+tempo total: 41378ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 7-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 6)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 18
+semana 2: 11
+semana 3: 2
+semana 4: 2
+semana 5: 23
+semana 6: 20
+semana 7: 36
+semana 8: 32
+-geral:
+
+demandaOtimaFalta: 144
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1131
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 51
+penalidade: 2031
+
+tempo total: 40848ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 8-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 4)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 22)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 12
+semana 3: 2
+semana 4: 3
+semana 5: 22
+semana 6: 25
+semana 7: 37
+semana 8: 41
+-geral:
+
+demandaOtimaFalta: 157
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1142
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 54
+penalidade: 2055
+
+tempo total: 40682ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 9-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 4)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 15)
+semana 8: não (grau de inviabilidade 25)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 12
+semana 3: 2
+semana 4: 4
+semana 5: 22
+semana 6: 18
+semana 7: 29
+semana 8: 43
+-geral:
+
+demandaOtimaFalta: 147
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1119
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2022
+
+tempo total: 41482ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 10-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 22
+semana 2: 14
+semana 3: 1
+semana 4: 1
+semana 5: 25
+semana 6: 20
+semana 7: 38
+semana 8: 40
+-geral:
+
+demandaOtimaFalta: 161
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1168
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2085
+
+tempo total: 41334ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 11-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 20
+semana 2: 14
+semana 3: 2
+semana 4: 2
+semana 5: 20
+semana 6: 21
+semana 7: 27
+semana 8: 33
+-geral:
+
+demandaOtimaFalta: 139
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1149
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2044
+
+tempo total: 41250ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 12-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 25)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 16
+semana 3: 1
+semana 4: 5
+semana 5: 22
+semana 6: 19
+semana 7: 34
+semana 8: 44
+-geral:
+
+demandaOtimaFalta: 158
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1150
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 55
+penalidade: 2064
+
+tempo total: 40729ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 13-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 19
+semana 2: 12
+semana 3: 3
+semana 4: 5
+semana 5: 25
+semana 6: 22
+semana 7: 32
+semana 8: 44
+-geral:
+
+demandaOtimaFalta: 162
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1145
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2063
+
+tempo total: 41042ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 14-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 11)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 11
+semana 3: 2
+semana 4: 4
+semana 5: 22
+semana 6: 29
+semana 7: 31
+semana 8: 39
+-geral:
+
+demandaOtimaFalta: 153
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1125
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 43
+penalidade: 2034
+
+tempo total: 40900ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 15-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 20
+semana 2: 13
+semana 3: 1
+semana 4: 5
+semana 5: 21
+semana 6: 20
+semana 7: 32
+semana 8: 35
+-geral:
+
+demandaOtimaFalta: 147
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1142
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 51
+penalidade: 2045
+
+tempo total: 40907ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 16-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 22)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 14
+semana 3: 2
+semana 4: 5
+semana 5: 17
+semana 6: 25
+semana 7: 33
+semana 8: 43
+-geral:
+
+demandaOtimaFalta: 156
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1129
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2041
+
+tempo total: 41496ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 17-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 14)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 13
+semana 2: 17
+semana 3: 2
+semana 4: 4
+semana 5: 21
+semana 6: 26
+semana 7: 26
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 147
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1124
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 46
+penalidade: 2027
+
+tempo total: 41023ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 18-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 18
+semana 2: 11
+semana 3: 4
+semana 4: 4
+semana 5: 21
+semana 6: 23
+semana 7: 34
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 151
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1146
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2053
+
+tempo total: 41273ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 19-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 25)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 12
+semana 3: 5
+semana 4: 3
+semana 5: 17
+semana 6: 20
+semana 7: 34
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 144
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 56
+penalidade: 2035
+
+tempo total: 41104ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 20-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 15)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 16
+semana 2: 9
+semana 3: 3
+semana 4: 3
+semana 5: 27
+semana 6: 24
+semana 7: 28
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 146
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 48
+penalidade: 2037
+
+tempo total: 41038ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 21-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 2)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 13)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 10
+semana 3: 2
+semana 4: 2
+semana 5: 20
+semana 6: 22
+semana 7: 28
+semana 8: 34
+-geral:
+
+demandaOtimaFalta: 133
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1148
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 44
+penalidade: 2037
+
+tempo total: 40805ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 22-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 16
+semana 2: 13
+semana 3: 5
+semana 4: 4
+semana 5: 19
+semana 6: 24
+semana 7: 30
+semana 8: 42
+-geral:
+
+demandaOtimaFalta: 153
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1134
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 48
+penalidade: 2043
+
+tempo total: 40954ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 23-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 18
+semana 2: 14
+semana 3: 4
+semana 4: 4
+semana 5: 25
+semana 6: 21
+semana 7: 31
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 155
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2046
+
+tempo total: 41620ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 24-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 13)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 22
+semana 2: 15
+semana 3: 3
+semana 4: 2
+semana 5: 20
+semana 6: 20
+semana 7: 28
+semana 8: 33
+-geral:
+
+demandaOtimaFalta: 143
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1133
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 46
+penalidade: 2032
+
+tempo total: 41075ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 25-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 14)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 19
+semana 2: 10
+semana 3: 2
+semana 4: 4
+semana 5: 23
+semana 6: 17
+semana 7: 31
+semana 8: 37
+-geral:
+
+demandaOtimaFalta: 143
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1133
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 47
+penalidade: 2032
+
+tempo total: 41987ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 26-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 4)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 3)
+semana 7: não (grau de inviabilidade 13)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 19
+semana 2: 14
+semana 3: 1
+semana 4: 4
+semana 5: 24
+semana 6: 24
+semana 7: 23
+semana 8: 34
+-geral:
+
+demandaOtimaFalta: 143
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1138
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 43
+penalidade: 2037
+
+tempo total: 40800ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 27-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 16
+semana 3: 3
+semana 4: 4
+semana 5: 27
+semana 6: 19
+semana 7: 30
+semana 8: 33
+-geral:
+
+demandaOtimaFalta: 149
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1158
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 48
+penalidade: 2063
+
+tempo total: 40929ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 28-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 4)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 15)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 16
+semana 2: 14
+semana 3: 2
+semana 4: 6
+semana 5: 18
+semana 6: 32
+semana 7: 30
+semana 8: 42
+-geral:
+
+demandaOtimaFalta: 160
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1125
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2041
+
+tempo total: 41030ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 29-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 26)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 23
+semana 2: 12
+semana 3: 2
+semana 4: 6
+semana 5: 21
+semana 6: 27
+semana 7: 32
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 161
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 56
+penalidade: 2052
+
+tempo total: 40815ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 30-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 14)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 14
+semana 2: 10
+semana 3: 3
+semana 4: 2
+semana 5: 19
+semana 6: 21
+semana 7: 31
+semana 8: 37
+-geral:
+
+demandaOtimaFalta: 137
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1129
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 45
+penalidade: 2022
+
+tempo total: 40828ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 31-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 13
+semana 3: 2
+semana 4: 6
+semana 5: 21
+semana 6: 24
+semana 7: 31
+semana 8: 37
+-geral:
+
+demandaOtimaFalta: 151
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1143
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2050
+
+tempo total: 41301ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 32-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 21)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 14
+semana 3: 3
+semana 4: 4
+semana 5: 20
+semana 6: 23
+semana 7: 40
+semana 8: 37
+-geral:
+
+demandaOtimaFalta: 156
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1130
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 54
+penalidade: 2042
+
+tempo total: 41573ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 33-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 2)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 26)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 14
+semana 3: 4
+semana 4: 3
+semana 5: 19
+semana 6: 28
+semana 7: 35
+semana 8: 45
+-geral:
+
+demandaOtimaFalta: 165
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1162
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 56
+penalidade: 2083
+
+tempo total: 41214ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 34-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 21
+semana 2: 13
+semana 3: 2
+semana 4: 2
+semana 5: 22
+semana 6: 20
+semana 7: 36
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 152
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1162
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 51
+penalidade: 2070
+
+tempo total: 40823ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 35-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 6)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 22)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 20
+semana 2: 7
+semana 3: 1
+semana 4: 2
+semana 5: 24
+semana 6: 23
+semana 7: 34
+semana 8: 44
+-geral:
+
+demandaOtimaFalta: 155
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1139
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2050
+
+tempo total: 40951ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 36-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 6)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 13)
+semana 8: não (grau de inviabilidade 23)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 13
+semana 2: 12
+semana 3: 2
+semana 4: 3
+semana 5: 18
+semana 6: 24
+semana 7: 26
+semana 8: 40
+-geral:
+
+demandaOtimaFalta: 138
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1128
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 50
+penalidade: 2022
+
+tempo total: 41044ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 37-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 24)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 21
+semana 2: 10
+semana 3: 2
+semana 4: 3
+semana 5: 24
+semana 6: 18
+semana 7: 35
+semana 8: 44
+-geral:
+
+demandaOtimaFalta: 157
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1153
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 55
+penalidade: 2066
+
+tempo total: 40813ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 38-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 15)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 13
+semana 3: 1
+semana 4: 5
+semana 5: 23
+semana 6: 20
+semana 7: 29
+semana 8: 34
+-geral:
+
+demandaOtimaFalta: 142
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1149
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 46
+penalidade: 2047
+
+tempo total: 41690ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 39-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 15)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 11
+semana 3: 1
+semana 4: 3
+semana 5: 24
+semana 6: 20
+semana 7: 29
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 139
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 47
+penalidade: 2030
+
+tempo total: 41587ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 40-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 4)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 14)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 14
+semana 2: 12
+semana 3: 4
+semana 4: 3
+semana 5: 19
+semana 6: 21
+semana 7: 31
+semana 8: 33
+-geral:
+
+demandaOtimaFalta: 137
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1130
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 46
+penalidade: 2023
+
+tempo total: 41122ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 41-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 26)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 17
+semana 3: 2
+semana 4: 4
+semana 5: 22
+semana 6: 24
+semana 7: 33
+semana 8: 46
+-geral:
+
+demandaOtimaFalta: 165
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1121
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 58
+penalidade: 2042
+
+tempo total: 41174ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 42-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 22
+semana 2: 16
+semana 3: 3
+semana 4: 3
+semana 5: 24
+semana 6: 23
+semana 7: 32
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 161
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1148
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2065
+
+tempo total: 40848ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 43-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 21)
+semana 8: não (grau de inviabilidade 24)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 19
+semana 2: 10
+semana 3: 3
+semana 4: 6
+semana 5: 23
+semana 6: 21
+semana 7: 37
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 157
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1165
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 58
+penalidade: 2078
+
+tempo total: 40990ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 44-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 22)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 20
+semana 2: 12
+semana 3: 2
+semana 4: 4
+semana 5: 16
+semana 6: 22
+semana 7: 32
+semana 8: 46
+-geral:
+
+demandaOtimaFalta: 154
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1158
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 54
+penalidade: 2068
+
+tempo total: 40952ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 45-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 17)
+semana 8: não (grau de inviabilidade 19)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 17
+semana 2: 12
+semana 3: 1
+semana 4: 3
+semana 5: 24
+semana 6: 25
+semana 7: 37
+semana 8: 38
+-geral:
+
+demandaOtimaFalta: 157
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1133
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2046
+
+tempo total: 41516ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 46-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 4)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 18
+semana 2: 8
+semana 3: 2
+semana 4: 2
+semana 5: 23
+semana 6: 22
+semana 7: 31
+semana 8: 40
+-geral:
+
+demandaOtimaFalta: 146
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1142
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 48
+penalidade: 2044
+
+tempo total: 42926ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 47-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 4)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 18)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 13
+semana 2: 13
+semana 3: 1
+semana 4: 1
+semana 5: 22
+semana 6: 22
+semana 7: 32
+semana 8: 41
+-geral:
+
+demandaOtimaFalta: 145
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1138
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 52
+penalidade: 2039
+
+tempo total: 41614ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 48-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 13)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 16
+semana 2: 15
+semana 3: 2
+semana 4: 3
+semana 5: 20
+semana 6: 21
+semana 7: 30
+semana 8: 39
+-geral:
+
+demandaOtimaFalta: 146
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1117
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 46
+penalidade: 2019
+
+tempo total: 41005ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 49-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 19)
+semana 8: não (grau de inviabilidade 21)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 15
+semana 2: 11
+semana 3: 2
+semana 4: 5
+semana 5: 22
+semana 6: 22
+semana 7: 33
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 146
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1139
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 53
+penalidade: 2041
+
+tempo total: 40808ms
+
+-------------------------------------------
+
+-------Instância n060w8 iteração 50-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 3)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: sim (grau de inviabilidade 0)
+semana 5: não (grau de inviabilidade 5)
+semana 6: não (grau de inviabilidade 5)
+semana 7: não (grau de inviabilidade 16)
+semana 8: não (grau de inviabilidade 20)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 20
+semana 2: 10
+semana 3: 3
+semana 4: 6
+semana 5: 22
+semana 6: 17
+semana 7: 35
+semana 8: 36
+-geral:
+
+demandaOtimaFalta: 149
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 1135
+fdsTotalAcimaMax: 756
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 49
+penalidade: 2040
+
+tempo total: 41087ms
+
+-------------------------------------------
+

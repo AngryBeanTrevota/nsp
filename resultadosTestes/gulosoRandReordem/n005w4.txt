@@ -1,0 +1,74 @@
+-------Instância n005w4 iteração 100-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 0)
+semana 2: não (grau de inviabilidade 1)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: não (grau de inviabilidade 7)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 22
+semana 2: 21
+semana 3: 14
+semana 4: 15
+-geral:
+
+demandaOtimaFalta: 72
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 246
+fdsTotalAcimaMax: 190
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 16
+penalidade: 508
+
+tempo total: 0ms
+
+-------------------------------------------
+
+-------Instância n005w4 iteração 100-------
+
+---viabilidade:
+
+semana 1: não (grau de inviabilidade 0)
+semana 2: sim (grau de inviabilidade 0)
+semana 3: sim (grau de inviabilidade 0)
+semana 4: não (grau de inviabilidade 7)
+
+---penalidade
+
+-falta demanda ótima por semana:
+
+semana 1: 25
+semana 2: 18
+semana 3: 15
+semana 4: 20
+-geral:
+
+demandaOtimaFalta: 78
+preferenciasFalta: 0
+fdsIncompleto: 0
+alocTotalFaltaMin: 0
+alocTotalAcimaMax: 262
+fdsTotalAcimaMax: 190
+
+
+---conclusão
+
+viável: não
+grau de inviabilidade: 14
+penalidade: 530
+
+tempo total: 0ms
+
+-------------------------------------------
+

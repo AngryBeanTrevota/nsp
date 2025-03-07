@@ -73,6 +73,9 @@ public:
     int demandasOtimasFaltandoTurno(string dia, string turno, string habilidade);
 
     void inicializaAlocacoes(vector<shared_ptr<Enfermeiro>> enfermeiros, vector<string> turnos, vector<string> habilidades);
+
+    bool getAlocacaoEspecifica(shared_ptr<Enfermeiro> enf, string dia, string turno, string habilidade);
+    bool getDemandaSupridaEspecifica(string dia, string turno, string habilidade);
 };
 
 #endif // SOLUCAO_H
