@@ -217,15 +217,19 @@ int Solucao::somaDemandasOtimasFaltando()
 void Solucao::inicializaAlocacoes(vector<shared_ptr<Enfermeiro>> enfermeiros, vector<string> turnos, vector<string> habilidades)
 {
     vector<string> diasSemana = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    vector<string> turnosComNone(turnos);
+    turnosComNone.push_back("None");
+    vector<string> habComNone(habilidades);
+    habComNone.push_back("None");
     for (int i = 0; i < enfermeiros.size(); i++)
     {
         for (int j = 0; j < 7; j++)
         {
-            for (int k = 0; k < turnos.size(); k++)
+            for (int k = 0; k < turnosComNone.size(); k++)
             {
-                for (int l = 0; l < habilidades.size(); l++)
+                for (int l = 0; l < habComNone.size(); l++)
                 {
-                    totalAlocacoes[enfermeiros[i]][diasSemana[j]][turnos[k]][habilidades[l]] = false;
+                    totalAlocacoes[enfermeiros[i]][diasSemana[j]][turnosComNone[k]][habComNone[l]] = false;
                 }
             }
         }

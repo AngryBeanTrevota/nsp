@@ -98,6 +98,7 @@ public:
     // ils
 
     void perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSemana);
+    void ils(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIterILS, int limiteIterBL);
 };
 
 #endif // INSTANCIA_H

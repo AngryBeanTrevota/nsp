@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <windows.h>
 
 // Construtor
 Instancia::Instancia()
@@ -374,8 +375,6 @@ void Instancia::mudaTurno(Solucao &solSemana, Semana &semanaInstancia, Enfermeir
         return;
     }
 
-    std::cout << "problema no mudaTurno" << endl;
-
     if (turnoAntigo != "None")
     {
         if (!solSemana.getTotalAlocacoes().at(enf).at(dia).at(turnoAntigo).at(habilidade))
@@ -494,8 +493,6 @@ int Instancia::mudaCalculaNotaBuscaLocal(Semana &semanaInstancia, EnfermeiroProg
         if (solSemana.getTotalAlocacoes().at(enf).at(dia).at(tipoTurnos[turno]).at(habilidade))
         {
             turnoAntigo = tipoTurnos[turno];
-            cout << endl
-                 << turnoAntigo << endl;
         }
     }
 
@@ -610,6 +607,45 @@ int Instancia::mudaHabilidadeCalculaNotaBuscaLocal(Semana &semanaInstancia, Enfe
     sol.setGrauInviabilidade(sol.getGrauInviabilidade() + mudancaDemandaMin);
     sol.setPenalidade(sol.getPenalidade() + mudancaDemandaOpt + mudancaAlocTotal + mudancaAlocFds);
     return sol.getPenalidade();
+}
+
+void Instancia::ils(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIterILS, int limiteIterBL)
+{
+    // busca local inicial
+
+    buscaLocal(solCompleta, numSemana, limiteIterBL);
+
+    // cria ponteiro melhorSol pra guardar a melhor até agr
+
+    SolucaoCompleta &solucaoAtual = *solCompleta;
+
+    // while contador < limiteIter
+    for (int contador = 0; contador < limiteIterILS; contador++)
+    {
+        // clona melhorSol
+        auto solucaoAtualClone = std::make_shared<SolucaoCompleta>(solucaoAtual);
+
+        // perturba solucao
+        perturbacao(solucaoAtualClone, numSemana);
+
+        // busca local no clone
+        buscaLocal(solucaoAtualClone, numSemana, limiteIterBL);
+        // if (penalidade(melhorSol) > penalidade(solClone))
+        //     *melhorSol = clone
+
+        int penalidadeAtual = solucaoAtual.getPenalidade() * solucaoAtual.getGrauInviabilidade() + solucaoAtual.getPenalidade();
+        int penalidadeClone = solucaoAtualClone->getPenalidade() * solucaoAtualClone->getGrauInviabilidade() + solucaoAtualClone->getPenalidade();
+
+        if (penalidadeClone < penalidadeAtual)
+        {
+            solucaoAtual = *solucaoAtualClone;
+            cout << "Penalidade atual vs clone: " << penalidadeAtual << " vs " << penalidadeClone;
+        }
+    }
+
+    // muda solucao pra ser a do ils
+
+    *solCompleta = solucaoAtual;
 }
 
 void Instancia::buscaLocal(shared_ptr<SolucaoCompleta> solCompleta, int numSemana, int limiteIter)
@@ -753,7 +789,7 @@ int Instancia::avaliaNota(vector<Solucao> &sol, map<string, EnfermeiroProgresso>
 void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, EnfermeiroProgresso> &enfProgMap, string codigoInstancia, int numeroIteracao, int duracaoMilissegundos)
 {
     ofstream outputFile;
-    outputFile.open("resultadosTestes/gulosoRandReordem/" + codigoInstancia + ".txt", ios::app);
+    outputFile.open("resultadosTestes/ILS/" + codigoInstancia + ".txt", ios::app);
 
     if (!outputFile.is_open())
     {
@@ -770,7 +806,7 @@ void Instancia::registraSolucao(vector<Solucao> &solucoes, map<string, Enfermeir
     {
         Solucao &solAtual = solucoes[i];
 
-        outputFile << "semana " << i + 1 << ": " << (solAtual.avaliaViabilidade() ? "sim" : "não")
+        outputFile << "semana " << i + 1 << ": " << (solAtual.getGrauInviabilidade() > 0 ? "sim" : "não")
                    << " (grau de inviabilidade " << solAtual.getGrauInviabilidade() << ")\n";
         grauInviabilidade += solAtual.getGrauInviabilidade();
     }
@@ -878,13 +914,11 @@ void Instancia::perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSema
         totalAlocFdsAntes += solCompleta->getEnfProg()[enfermeiros[enf]->getCodigo()].getTotalAlocFimSemana();
         for (int turno = 0; turno < tipoTurnos.size(); turno++)
         {
-
             vector<string> enfHabilidades(enfermeiros[enf]->getHabilidades());
             enfHabilidades.push_back("None");
             for (int hab = 0; hab < enfHabilidades.size(); hab++)
             {
                 // pega demanda minima e ótima antes
-
                 demandaMinAntes += (solucaoSemana.grauViabilidadeTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.grauViabilidadeTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
                 demandaOptAntes += (solucaoSemana.demandasOtimasFaltandoTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.demandasOtimasFaltandoTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
             }
@@ -915,7 +949,6 @@ void Instancia::perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSema
         {
             for (int hab = 0; hab < enfHabilidades.size(); hab++)
             {
-
                 // atualiza alocacoes
                 bool alocDia1 = solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia1, tipoTurnos[turno], enfHabilidades[hab]);
                 bool alocDia2 = solucaoSemana.getAlocacaoEspecifica(enfermeiros[enf], dia2, tipoTurnos[turno], enfHabilidades[hab]);
@@ -960,14 +993,39 @@ void Instancia::perturbacao(shared_ptr<SolucaoCompleta> solCompleta, int numSema
             {
                 // pega demanda minima e ótima Depois
 
+                string turnoAtual = tipoTurnos[turno];
+
+                string habAtual = enfHabilidades[hab];
+
                 demandaMinDepois += (solucaoSemana.grauViabilidadeTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.grauViabilidadeTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
                 demandaOptDepois += (solucaoSemana.demandasOtimasFaltandoTurno(dia1, tipoTurnos[turno], enfHabilidades[hab]) + solucaoSemana.demandasOtimasFaltandoTurno(dia2, tipoTurnos[turno], enfHabilidades[hab]));
             }
         }
     }
 
-    int mudancaPenalidade = (totalAlocFdsAntes - totalAlocFdsDepois) + (demandaOptAntes - demandaOptDepois);
-    int mudancaGrauInv = (demandaMinAntes - demandaMinDepois);
+    int mudancaPenalidade = (totalAlocFdsDepois - totalAlocFdsAntes) + (demandaOptDepois - demandaOptAntes);
+    int mudancaGrauInv = (demandaMinDepois - demandaMinAntes);
+
+    // Impressão com quebras de linha antes
+    cout << "\n\n\n";
+
+    // Impressão das variáveis utilizadas nos cálculos
+    cout << "Total Aloc Fds Antes: " << totalAlocFdsAntes << endl;
+    cout << "Total Aloc Fds Depois: " << totalAlocFdsDepois << endl;
+    cout << "Demanda Opt Antes: " << demandaOptAntes << endl;
+    cout << "Demanda Opt Depois: " << demandaOptDepois << endl;
+    cout << "Demanda Min Antes: " << demandaMinAntes << endl;
+    cout << "Demanda Min Depois: " << demandaMinDepois << endl;
+
+    cout << "\n"; // Separação entre os valores originais e os cálculos
+
+    // Impressão das mudanças calculadas
+    cout << "Mudanca Penalidade: " << mudancaPenalidade << endl;
+    cout << "Mudanca Grau Inviabilidade: " << mudancaGrauInv << endl;
+
+    // Impressão com quebras de linha depois
+    cout << "\n\n\n";
+
     solCompleta->setPenalidade(solCompleta->getPenalidade() + mudancaPenalidade);
     solCompleta->setGrauInviabilidade(solCompleta->getGrauInviabilidade() + mudancaGrauInv);
     // reavaliar qualidade dentro do loop
@@ -978,6 +1036,7 @@ shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa, string instancia, int it
     // começa a medir o tempo
 
     auto start = std::chrono::high_resolution_clock::now();
+    Beep(523, 500);
 
     shared_ptr<SolucaoCompleta> solCompleta = make_unique<SolucaoCompleta>(this->enfermeiros);
     for (int i = 0; i < semanas.size(); i++)
@@ -1004,21 +1063,12 @@ shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa, string instancia, int it
     solCompleta->setPenalidade(penalidadeSol);
     cout << "Viavel: " << (viavel ? "Sim" : "Nao") << "/ Penalidade: " << penalidadeSol << endl;
 
-    /*
     for (int numSemana = 0; numSemana < this->getSemanas().size(); numSemana++)
     {
-        buscaLocal(solCompleta, numSemana, 100);
+        ils(solCompleta, numSemana, 3, 10);
+        // buscaLocal(solCompleta, numSemana, 100);
+        // cout << "NUM SEMANA: " << numSemana << endl << endl;
     }
-
-    */
-
-    solCompleta->getSolucoesSemana()[0].exibirAlocacoes();
-    perturbacao(solCompleta, 0);
-    cout << endl
-         << endl
-         << "DEPOIS" << endl;
-    solCompleta->getSolucoesSemana()[0].exibirAlocacoes();
-    registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), "n005w4", 100, 0);
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -1026,6 +1076,7 @@ shared_ptr<SolucaoCompleta> Instancia::guloso(int alfa, string instancia, int it
     int duracaMilissegundos = duration.count();
 
     registraSolucao(solucoesSemanas, solCompleta->getEnfProg(), instancia, iteracao, duracaMilissegundos);
+    Beep(523, 500);
 
     return solCompleta;
 }
